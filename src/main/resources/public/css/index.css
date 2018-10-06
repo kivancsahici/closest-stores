@@ -9,7 +9,7 @@ tr.shown td.details-control {
 
 /* Bootstrap */
 .jumbotron {
-	background-image:url('../resources/logo-acme-corp.png');
+	background-image:url('../icon/jumbo_logo.png');
 	background-repeat: no-repeat;
 	background-position: center;	
 	background-color: #36538b !important;

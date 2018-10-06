@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.acme.airports.model.NearestStores;
 import com.acme.airports.model.StoreResult;
 
 @RestController
@@ -19,7 +21,7 @@ public class BaseController {
 	private EntityManager entityManager;
 	
 	@RequestMapping(value = "/stores", method = RequestMethod.GET)
-	public List<StoreResult> getNearestStores(
+	public NearestStores getNearestStores(
 			@RequestParam("latitude") double latitude,
 			@RequestParam("longitude") double longitude
 			) throws TransformerException {		
@@ -62,6 +64,10 @@ public class BaseController {
 		
 		@SuppressWarnings("unchecked")
 		List<StoreResult> storeList = query.getResultList();
-		return storeList;
+		NearestStores stores = new NearestStores();
+		stores.setNearestStores(storeList);
+		stores.setLatitude(latitude);
+		stores.setLongitude(longitude);
+		return stores;
 	}
 }

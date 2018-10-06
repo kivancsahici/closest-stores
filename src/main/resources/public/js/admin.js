@@ -30,13 +30,14 @@
 			
 			var i;
 			var markers = [];
-			for (i = 0; i < data.length; i++) {
-			    var latlon = new google.maps.LatLng(data[i].latitude, data[i].longitude);
-			    var marker = new google.maps.Marker({position:latlon,map:map,title:data[i].addressName});
+			for (i = 0; i < data.nearestStores.length; i++) {
+			    var latlon = new google.maps.LatLng(data.nearestStores[i].latitude, data.nearestStores[i].longitude);
+			    var marker = new google.maps.Marker({position:latlon,map:map,title:data.nearestStores[i].addressName});
 			    markers.push(marker);
 			}
 			
-			var latlon2 = new google.maps.LatLng(52.075854, 4.234678);
+			//var latlon2 = new google.maps.LatLng(52.075854, 4.234678);
+			var latlon2 = new google.maps.LatLng(data.latitude, data.longitude);
 			var marker2 = new google.maps.Marker(
 			  {  position:latlon2,
 			     map:map,
@@ -61,10 +62,12 @@
 			console.log(jqXHR, textStatus);
 		}
 		
-		var searchNearestStores = function() {
+		var searchNearestStores = function(latitude, longitude) {
 			$.ajax({
 				type : 'GET',
-				url: '/jumbo/stores?latitude=52.075854&longitude=4.234678',
+				//url: '/jumbo/stores?latitude=52.075854&longitude=4.234678',
+				url: '/jumbo/stores',
+				data: {"latitude": latitude,"longitude": longitude},
 				dataType : 'json',
 				success : successCallbackFuzzySearch,
 				error : errorCallbackFuzzySearch
@@ -104,10 +107,19 @@
 		};	
 	})();
 	
-	$(document).ready(function() {
-		var x = document.getElementById("demo");
-		
+	$(document).ready(function() {				
 		$("button").on("click", function(e){
 			JUMBO.searchNearestStores();
 		 });
+		
+		$(".needs-validation").on("keypress", function(e) {		 
+			 if (event.keyCode == 13) {
+				e.preventDefault();	        
+		        var latitude = $("#formInputLatitude").val();
+		        var longitude = $("#formInputLongitude").val();
+		        JUMBO.searchNearestStores(latitude, longitude);
+		        //$(".needs-validation input").toggleClass("is-invalid", true);
+		        return false;
+		     }
+		 });	
 	} );
