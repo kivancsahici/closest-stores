@@ -15,8 +15,8 @@
 	var JUMBO = (function() {
 		var successCallbackFuzzySearch = function(data) {
 			var mapholder = document.getElementById('mapholder')
-		    mapholder.style.height = '250px';
-		    mapholder.style.width = '500px';    
+		    mapholder.style.height = '500px';
+		    mapholder.style.width = '750px';    
 		    
 		    var myOptions = {
 		      center:latlon,
@@ -36,6 +36,19 @@
 			    markers.push(marker);
 			}
 			
+			var latlon2 = new google.maps.LatLng(52.075854, 4.234678);
+			var marker2 = new google.maps.Marker(
+			  {  position:latlon2,
+			     map:map,
+			     title:"You are here!",
+			     icon: {
+			       url: "icon/blue_pin.png"
+			     }
+			  }
+			);
+			markers.push(marker2);
+			
+			
 			var bounds = new google.maps.LatLngBounds();
 		    for (var i = 0; i < markers.length; i++) {
 		     bounds.extend(markers[i].getPosition());
@@ -51,7 +64,7 @@
 		var searchNearestStores = function() {
 			$.ajax({
 				type : 'GET',
-				url : '/jumbo/stores?latitude=51.778461&longitude=4.615551',
+				url: '/jumbo/stores?latitude=52.075854&longitude=4.234678',
 				dataType : 'json',
 				success : successCallbackFuzzySearch,
 				error : errorCallbackFuzzySearch
