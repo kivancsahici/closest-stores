@@ -11,32 +11,49 @@
 	        return (visibility == 'visible') ? 'hidden' : 'visible';
 	    });
 	};
-	
+	var map;
+	var markers = [];
 	var JUMBO = (function() {
+		var addMarkerWithTimeout = function(data, timeout) {
+			window.setTimeout(function() {
+				markers.push(new google.maps.Marker({
+					position: data.position,
+					map: map,
+					title:data.title, 
+		    		icon:{url:"icon/shopping-cart-1.png"},
+					animation: google.maps.Animation.DROP
+		      }));
+		    }, timeout);
+		}
 		var successCallbackFuzzySearch = function(data) {
+			//reset markers array
+			markers = [];
+			
 			var mapholder = document.getElementById('mapholder')
-		    mapholder.style.height = '500px';
-		    mapholder.style.width = '750px';    
+		    mapholder.style.height = '350px';
+		    mapholder.style.width = '600px';    
 		    
 		    var myOptions = {
-		      center:latlon,
-		      zoom:8,
+		      center: {lat: data.latitude, lng: data.longitude},
+		      zoom:12,
 		      mapTypeId:google.maps.MapTypeId.ROADMAP,
 		      mapTypeControl:false,
 		      navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
 		    }
 		    
-		    var map = new google.maps.Map(document.getElementById("mapholder"), myOptions);
+		    map = new google.maps.Map(document.getElementById("mapholder"), myOptions);
 			
 			var i;
-			var markers = [];
 			for (i = 0; i < data.nearestStores.length; i++) {
 			    var latlon = new google.maps.LatLng(data.nearestStores[i].latitude, data.nearestStores[i].longitude);
-			    var marker = new google.maps.Marker({position:latlon,map:map,title:data.nearestStores[i].addressName});
-			    markers.push(marker);
+			    
+			    var param = {};
+			    param["position"] = latlon;
+			    param["title"] = data.nearestStores[i].addressName;
+			    addMarkerWithTimeout(param, 300 + (i * 500));
+			    
 			}
 			
-			//var latlon2 = new google.maps.LatLng(52.075854, 4.234678);
 			var latlon2 = new google.maps.LatLng(data.latitude, data.longitude);
 			var marker2 = new google.maps.Marker(
 			  {  position:latlon2,
@@ -49,13 +66,13 @@
 			);
 			markers.push(marker2);
 			
-			
+			/*
 			var bounds = new google.maps.LatLngBounds();
 		    for (var i = 0; i < markers.length; i++) {
 		     bounds.extend(markers[i].getPosition());
 		    }
 
-		    map.fitBounds(bounds);
+		    map.fitBounds(bounds);*/
 		}
 		
 		var errorCallbackFuzzySearch = function(jqXHR, textStatus) {
@@ -109,7 +126,12 @@
 	
 	$(document).ready(function() {				
 		$("button").on("click", function(e){
-			JUMBO.searchNearestStores();
+			e.preventDefault();	        
+	        var latitude = $("#formInputLatitude").val();
+	        var longitude = $("#formInputLongitude").val();
+	        JUMBO.searchNearestStores(latitude, longitude);
+	        //$(".needs-validation input").toggleClass("is-invalid", true);
+	        return false;
 		 });
 		
 		$(".needs-validation").on("keypress", function(e) {		 
