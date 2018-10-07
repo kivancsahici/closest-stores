@@ -8,6 +8,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Store {
+	@Id
+    private Integer sapStoreID;
+	private String city;
+	private String postalCode;	
+	private String street;
+    private String addressName;
+    private double longitude;
+    private double latitude;
+	
 	public String getCity() {
 		return city;
 	}
@@ -50,19 +59,4 @@ public class Store {
 	public void setSapStoreID(Integer sapStoreID) {
 		this.sapStoreID = sapStoreID;
 	}
-	private String city;
-	private String postalCode;	
-	private String street;
-    private String addressName;
-    private double longitude;
-    private double latitude;    
-    
-    //"complexNumber":"33249",
-    //"showWarningMessage":true,
-    //"todayOpen":"08:00",
-    //"locationType":"SupermarktPuP",
-    //"collectionPoint":true,
-    @Id
-    private Integer sapStoreID;
-    //"todayClose":"20:00"
 }
