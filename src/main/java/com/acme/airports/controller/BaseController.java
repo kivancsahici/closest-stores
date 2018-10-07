@@ -2,6 +2,7 @@ package com.acme.airports.controller;
 
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -72,10 +73,22 @@ public class BaseController {
 		stores.setLatitude(latitude);
 		stores.setLongitude(longitude);
 		
-		LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
+		//TODO undo comment out
+		//LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
+		LocalTime now = LocalTime.parse("19:10");
+		
 		for(StoreResult result : storeList) {
-			//if(result.getTodayOpen())
-			result.setStoreStatus(StoreStatus.CLOSING_SOON);
+						
+			LocalTime from = LocalTime.parse(result.getTodayOpen());
+			LocalTime to = LocalTime.parse(result.getTodayClose());
+			if(now.isAfter(from) && now.isBefore(to)) {
+				if(ChronoUnit.MINUTES.between(now, to) < 60)
+					result.setStoreStatus(StoreStatus.CLOSING_SOON);
+				else
+					result.setStoreStatus(StoreStatus.OPEN);
+			}
+			else
+				result.setStoreStatus(StoreStatus.CLOSED);
 		}
 		return stores;
 	}
