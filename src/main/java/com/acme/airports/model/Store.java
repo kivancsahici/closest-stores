@@ -2,7 +2,6 @@ package com.acme.airports.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
@@ -17,7 +16,8 @@ public class Store {
     private double longitude;
     private double latitude;
     private String todayClose;
-	
+    private String todayOpen;
+    
 	public String getCity() {
 		return city;
 	}
@@ -64,6 +64,12 @@ public class Store {
 		return todayClose;
 	}
 	public void setTodayClose(String todayClose) {
-		this.todayClose = todayClose;
+		this.todayClose = todayClose;	
+	}
+	public String getTodayOpen() {
+		return todayOpen;
+	}
+	public void setTodayOpen(String todayOpen) {
+		this.todayOpen = todayOpen;
 	}
 }
