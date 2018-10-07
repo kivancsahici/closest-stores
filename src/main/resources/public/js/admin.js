@@ -30,7 +30,7 @@
 			markers = [];
 			
 			var mapholder = document.getElementById('mapholder')
-		    mapholder.style.height = '350px';
+		    mapholder.style.height = '360px';
 		    mapholder.style.width = '600px';    
 		    
 		    var myOptions = {
@@ -143,5 +143,17 @@
 		        //$(".needs-validation input").toggleClass("is-invalid", true);
 		        return false;
 		     }
-		 });	
+		 });
+		
+		$(".storeList").on('mouseleave', '.list-group a', function(e) {
+			e.preventDefault();
+			var storeIndex = $(".storeList > .list-group > a").index(this);
+			markers[storeIndex + 1].setIcon("icon/shopping-cart-1.png");
+		});
+		
+		$(".storeList").on('mouseover', '.list-group a', function(e) {
+			e.preventDefault();
+			var storeIndex = $(".storeList > .list-group > a").index(this);
+			markers[storeIndex + 1].setIcon("icon/shopping-cart.png");		
+		});
 	} );

@@ -65,3 +65,8 @@ body {
 	background-color: #00aced !important;
 	border-color: #00aced !important;
 }
+
+.storeList {
+	height: 370px;
+	overflow-y: scroll;
+}
