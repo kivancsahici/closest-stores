@@ -3,6 +3,8 @@ package com.acme.airports;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.acme.airports.model.Store;
 import com.acme.airports.model.Stores;
 import com.acme.airports.repository.StoreRepository;
 
@@ -29,7 +32,9 @@ public class StartupApplicationListenerExample implements ApplicationListener<Co
 		InputStream inputStream = TypeReference.class.getResourceAsStream("/json/stores.json");
 		try {
 			Stores users = mapper.readValue(inputStream,typeReference);
-			storeRepository.saveAll(users.getStores());
+			List<Store> stores = users.getStores();
+			stores.removeIf(s -> s.getTodayClose().equals("Gesloten"));
+			storeRepository.saveAll(stores);
 			System.out.println("Users Saved!");
 		} catch (IOException e){
 			System.out.println("Unable to save users: " + e.getMessage());

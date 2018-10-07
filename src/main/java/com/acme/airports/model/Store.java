@@ -16,6 +16,7 @@ public class Store {
     private String addressName;
     private double longitude;
     private double latitude;
+    private String todayClose;
 	
 	public String getCity() {
 		return city;
@@ -58,5 +59,11 @@ public class Store {
 	}
 	public void setSapStoreID(Integer sapStoreID) {
 		this.sapStoreID = sapStoreID;
+	}
+	public String getTodayClose() {
+		return todayClose;
+	}
+	public void setTodayClose(String todayClose) {
+		this.todayClose = todayClose;
 	}
 }
