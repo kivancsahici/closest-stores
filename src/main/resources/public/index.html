@@ -67,7 +67,7 @@
 		<% for(var i = 0; i < nearestStores.length; i += 1) { %>
 		  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
 			<div class="d-flex w-100 justify-content-between">
-				<h5 class="mb-1"><%-nearestStores[i].addressName%></h5>				      
+				<h6 class="mb-1"><%-nearestStores[i].addressName%></h6>				      
 				
 				<%if (nearestStores[i].locationType == 'Supermarkt'){ %>
 					<div class="bg-supermarket"></div>
@@ -78,9 +78,17 @@
 				<%if (nearestStores[i].locationType == 'PuP'){ %>
 					<div class="bg-pet_supermarket"></div>
 				<% } %>
-			</div>				    
-			<small>Opens at <%-nearestStores[i].todayOpen%></small>
-			<small>Closes at <%-nearestStores[i].todayClose%></small>
+			</div>
+			
+			<%if (nearestStores[i].storeStatus == 'open'){ %>
+				<small>Currently open, closes at <%-nearestStores[i].todayClose%></small>
+			<% } %>
+			<%if (nearestStores[i].storeStatus == 'closing_soon'){ %>
+				<small>Closing soon at <%-nearestStores[i].todayClose%></small>
+			<% } %>				    
+			<%if (nearestStores[i].storeStatus == 'closed'){ %>
+				<small>Currently closed, opens at <%-nearestStores[i].todayOpen%></small>
+			<% } %>
 		  </a>
 		<% } %>
 	</div>
