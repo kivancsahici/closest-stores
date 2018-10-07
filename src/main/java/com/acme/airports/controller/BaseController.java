@@ -1,5 +1,7 @@
 package com.acme.airports.controller;
 
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.acme.airports.model.NearestStores;
 import com.acme.airports.model.StoreResult;
+import com.acme.airports.model.StoreStatus;
 
 @RestController
 @RequestMapping("/jumbo")
@@ -27,10 +30,10 @@ public class BaseController {
 			) throws TransformerException {		
 		String baseQuery =   "SELECT * FROM (  "  + 
 				 "   SELECT sap_storeid, city, address_name,  "  + 
-				 "          latitude, longitude, distance  "  + 
+				 "          latitude, longitude, distance, today_open, today_close  "  + 
 				 "     FROM (  "  + 
 				 "    SELECT z.sap_storeid, z.city, z.address_name,  "  + 
-				 "           z.latitude, z.longitude,  "  + 
+				 "           z.latitude, z.longitude, z.today_open, z.today_close, "  + 
 				 "           p.radius,  "  + 
 				 "           p.distance_unit  "  + 
 				 "               * rad2deg * (ACOS(COS(deg2rad * (:paramLatitude))  "  + 
@@ -68,6 +71,12 @@ public class BaseController {
 		stores.setNearestStores(storeList);
 		stores.setLatitude(latitude);
 		stores.setLongitude(longitude);
+		
+		LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
+		for(StoreResult result : storeList) {
+			//if(result.getTodayOpen())
+			result.setStoreStatus(StoreStatus.CLOSING_SOON);
+		}
 		return stores;
 	}
 }

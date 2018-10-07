@@ -2,6 +2,7 @@ package com.acme.airports.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,6 +16,12 @@ public class StoreResult {
 	private Double latitude;
 	private Double longitude;
     private Double distance;
+    private String todayOpen;
+    private String todayClose;
+    
+    @Transient
+    private StoreStatus storeStatus;
+    
 	public Integer getSapStoreID() {
 		return sapStoreID;
 	}
@@ -50,5 +57,23 @@ public class StoreResult {
 	}
 	public void setDistance(Double distance) {
 		this.distance = distance;
+	}
+	public StoreStatus getStoreStatus() {
+		return storeStatus;
+	}
+	public void setStoreStatus(StoreStatus storeStatus) {
+		this.storeStatus = storeStatus;
+	}
+	public String getTodayOpen() {
+		return todayOpen;
+	}
+	public void setTodayOpen(String todayOpen) {
+		this.todayOpen = todayOpen;
+	}
+	public String getTodayClose() {
+		return todayClose;
+	}
+	public void setTodayClose(String todayClose) {
+		this.todayClose = todayClose;
 	}
 }
