@@ -31,10 +31,10 @@ public class BaseController {
 			) throws TransformerException {		
 		String baseQuery =   "SELECT * FROM (  "  + 
 				 "   SELECT sap_storeid, city, address_name,  "  + 
-				 "          latitude, longitude, distance, today_open, today_close  "  + 
+				 "          latitude, longitude, distance, today_open, today_close, location_type  "  + 
 				 "     FROM (  "  + 
 				 "    SELECT z.sap_storeid, z.city, z.address_name,  "  + 
-				 "           z.latitude, z.longitude, z.today_open, z.today_close, "  + 
+				 "           z.latitude, z.longitude, z.today_open, z.today_close, z.location_type, "  + 
 				 "           p.radius,  "  + 
 				 "           p.distance_unit  "  + 
 				 "               * rad2deg * (ACOS(COS(deg2rad * (:paramLatitude))  "  + 

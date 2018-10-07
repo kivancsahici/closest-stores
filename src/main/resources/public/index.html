@@ -34,41 +34,27 @@
 			 </div>
 		</div>
 		<div class="row">
-			<div class="col-md-12 col-lg-5 storeList">					
+			<div class="col-md-12 col-lg-5 storeList">
+			  <!--  				
 				<div class="list-group">
-				  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
+				  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
 				    <div class="d-flex w-100 justify-content-between">
-				      <h5 class="mb-1">List group item heading</h5>
-				      <small>3 days ago</small>
-				    </div>
-				    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-				    <small>Donec id elit non mi porta.</small>
+				      <h5 class="mb-1">Jumbo Den Haag Anemoonstraat</h5>				      
+				      <div class="bg-combo_market"></div>
+				    </div>				    
+				    <small>Opens at 08:00</small>
+				    <small>Closes at 20:00</small>
 				  </a>
 				  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
 				    <div class="d-flex w-100 justify-content-between">
-				      <h5 class="mb-1">List group item heading</h5>
-				      <small class="text-muted">3 days ago</small>
-				    </div>
-				    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-				    <small class="text-muted">Donec id elit non mi porta.</small>
-				  </a>
-				  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-				    <div class="d-flex w-100 justify-content-between">
-				      <h5 class="mb-1">List group item heading</h5>
-				      <small class="text-muted">3 days ago</small>
-				    </div>
-				    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
-				    <small class="text-muted">Donec id elit non mi porta.</small>
-				  </a>
-				  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-				    <div class="d-flex w-100 justify-content-between">
-				      <h5 class="mb-1">List group item heading</h5>
-				      <small class="text-muted">3 days ago</small>
+				      <h5 class="mb-1">List group item heading2</h5>
+				      <div class="bg-pet_supermarket"></div>
 				    </div>
 				    <p class="mb-1">Donec id elit non mi porta gravida at eget metus. Maecenas sed diam eget risus varius blandit.</p>
 				    <small class="text-muted">Donec id elit non mi porta.</small>
 				  </a>
 				</div>
+			-->
 			</div>
 			<div class="col-md-12 col-lg-7">
 				<div id="mapholder"></div>
@@ -76,8 +62,32 @@
 		</div>			
 	</div>
 	
+	<script id="store-list-template" type="text/x-lodash-template">
+	<div class="list-group">
+		<% for(var i = 0; i < nearestStores.length; i += 1) { %>
+		  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+			<div class="d-flex w-100 justify-content-between">
+				<h5 class="mb-1"><%-nearestStores[i].addressName%></h5>				      
+				
+				<%if (nearestStores[i].locationType == 'Supermarkt'){ %>
+					<div class="bg-supermarket"></div>
+				<% } %>
+				<%if (nearestStores[i].locationType == 'SupermarktPuP'){ %>
+					<div class="bg-combo_market"></div>
+				<% } %>
+				<%if (nearestStores[i].locationType == 'PuP'){ %>
+					<div class="bg-pet_supermarket"></div>
+				<% } %>
+			</div>				    
+			<small>Opens at <%-nearestStores[i].todayOpen%></small>
+			<small>Closes at <%-nearestStores[i].todayClose%></small>
+		  </a>
+		<% } %>
+	</div>
+	</script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 	<script src="https://maps.google.com/maps/api/js?key=AIzaSyCsyPam88Gm63q_IV42TCtKg786ZJSVmwo"></script>
+	<script src="js/lodash.core.min.js"></script>
 	<script src="js/jquery-2.2.4.min.js"></script>
 	<script src="js/admin.js"></script>
 </body>

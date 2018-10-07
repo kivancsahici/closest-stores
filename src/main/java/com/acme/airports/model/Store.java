@@ -17,6 +17,7 @@ public class Store {
     private double latitude;
     private String todayClose;
     private String todayOpen;
+    private String locationType;
     
 	public String getCity() {
 		return city;
@@ -71,5 +72,11 @@ public class Store {
 	}
 	public void setTodayOpen(String todayOpen) {
 		this.todayOpen = todayOpen;
+	}
+	public String getLocationType() {
+		return locationType;
+	}
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
 	}
 }

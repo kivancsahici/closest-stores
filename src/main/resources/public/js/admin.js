@@ -14,6 +14,19 @@
 	var map;
 	var markers = [];
 	var JUMBO = (function() {
+		var renderNearestStores = function (data) {
+			  var storeListTemplate = document.getElementById("store-list-template").innerHTML;
+
+			  //create template function
+			  var templateFn = _.template(storeListTemplate);
+
+			  //execute template function with JSON object for the interpolated values			  
+			  var templateHTML = templateFn(data);
+
+			  //append rather than replace!
+			  //commentsDiv.innerHTML = templateHTML;
+			  $(".storeList").html(templateHTML);
+		}				
 		var addMarkerWithTimeout = function(data, timeout) {
 			window.setTimeout(function() {
 				markers.push(new google.maps.Marker({
@@ -73,6 +86,7 @@
 		    }
 
 		    map.fitBounds(bounds);*/
+			renderNearestStores(data);
 		}
 		
 		var errorCallbackFuzzySearch = function(jqXHR, textStatus) {
@@ -120,17 +134,19 @@
 		return {
 			showError : showError,
 			getLocation : getLocation,
-			searchNearestStores : searchNearestStores 
+			searchNearestStores : searchNearestStores
 		};	
 	})();
 	
-	$(document).ready(function() {				
+	$(document).ready(function() {
+		
 		$("button").on("click", function(e){
 			e.preventDefault();	        
 	        var latitude = $("#formInputLatitude").val();
 	        var longitude = $("#formInputLongitude").val();
 	        JUMBO.searchNearestStores(latitude, longitude);
 	        //$(".needs-validation input").toggleClass("is-invalid", true);
+	        
 	        return false;
 		 });
 		

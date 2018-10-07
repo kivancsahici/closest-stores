@@ -18,6 +18,7 @@ public class StoreResult {
     private Double distance;
     private String todayOpen;
     private String todayClose;
+    private String locationType;
     
     @Transient
     private StoreStatus storeStatus;
@@ -75,5 +76,11 @@ public class StoreResult {
 	}
 	public void setTodayClose(String todayClose) {
 		this.todayClose = todayClose;
+	}
+	public String getLocationType() {
+		return locationType;
+	}
+	public void setLocationType(String locationType) {
+		this.locationType = locationType;
 	}
 }
