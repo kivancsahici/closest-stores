@@ -44,11 +44,11 @@
 			
 			var mapholder = document.getElementById('mapholder')
 		    mapholder.style.height = '360px';
-		    mapholder.style.width = '600px';    
+		    mapholder.style.width = '750px';    
 		    
 		    var myOptions = {
 		      center: {lat: data.latitude, lng: data.longitude},
-		      zoom:12,
+		      zoom:10,
 		      mapTypeId:google.maps.MapTypeId.ROADMAP,
 		      mapTypeControl:false,
 		      navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
@@ -79,13 +79,15 @@
 			);
 			markers.push(marker2);
 			
-			/*
-			var bounds = new google.maps.LatLngBounds();
-		    for (var i = 0; i < markers.length; i++) {
-		     bounds.extend(markers[i].getPosition());
-		    }
+			window.setTimeout(function() {
+				var bounds = new google.maps.LatLngBounds();
+			    for (var i = 0; i < markers.length; i++) {
+			     bounds.extend(markers[i].getPosition());
+			    }
 
-		    map.fitBounds(bounds);*/
+			    map.fitBounds(bounds);
+		    }, 3000);
+					    
 			renderNearestStores(data);
 		}
 		
