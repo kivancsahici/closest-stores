@@ -68,7 +68,7 @@ body {
 
 .storeList {
 	height: 370px;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 .bg-combo_market {
