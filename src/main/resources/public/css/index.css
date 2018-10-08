@@ -1,20 +1,10 @@
 .navbar {
-	background-image:url('../icon/jumbo_logo2.png');
+	background-image:url('../icon/jumbo_logo.png');
 	background-repeat: no-repeat;
 	background-position: center;	
 	background-color: #d1d1d2 !important;
 	background-size: contain;
 	height: 60px;
-}
-
-.card {
-	border-width: 5px;
-}
-
-.card-header {
-	color: #0096d7;
-	font-weight: bolder;
-	font-size: 18px;
 }
 
 .container-fluid {
@@ -25,36 +15,8 @@
 	padding-bottom: 20px;
 }
 
-.card.airports, .card.reports {
-	visibility: hidden;
-}
-
-.searchAirports {
-	margin-bottom: 15px;
-	margin-top: 12px;
-}
-
-.displayReports {
-	margin-bottom: 15px;
-	margin-top: 81px;	
-}
-
-.form-group.reports {
-	margin-top: 81px;
-}
-
-.carousel-item {
-	background-color: red;
-	height: 500px;
-}
-
 body {
 	background-color: #d1d1d2 !important;
-}
-
-.btn-primary {
-	background-color: #00aced !important;
-	border-color: #00aced !important;
 }
 
 .storeList {
