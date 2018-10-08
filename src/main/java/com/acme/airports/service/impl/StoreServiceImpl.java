@@ -4,24 +4,29 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.acme.airports.dao.entity.Store;
 import com.acme.airports.dao.entity.StoreResult;
 import com.acme.airports.dao.entity.StoreStatus;
-import com.acme.airports.dao.repository.impl.StoreRepositoryImpl;
+import com.acme.airports.dao.repository.IStoreRepository;
 import com.acme.airports.service.IStoreService;
 import com.acme.airports.service.dto.NearestStores;
 
 @Service
 public class StoreServiceImpl implements IStoreService{
 	@Autowired
-	StoreRepositoryImpl storeRepository;
+	IStoreRepository storeRepository;
+	
+	@Override
+	public List<Store> saveAll(List<Store> storeList) {
+		storeList.removeIf(s -> s.getTodayClose().equals("Gesloten"));
+		return storeRepository.saveAll(storeList);
+	}
 	
 	@Override
 	public NearestStores findNearestStores(Double latitude, Double longitude) {		
-		List<StoreResult> storeList = storeRepository.findByLatitudeAndLongitude(latitude, longitude);
+		List<StoreResult> storeList = storeRepository./*findByLatitudeAndLongitude*/findNearestStores(latitude, longitude);
 		NearestStores stores = new NearestStores();
 		stores.setNearestStores(storeList);
 		stores.setLatitude(latitude);

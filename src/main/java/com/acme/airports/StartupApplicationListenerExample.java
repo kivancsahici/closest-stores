@@ -1,25 +1,23 @@
 package com.acme.airports;
 
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.acme.airports.dao.entity.Store;
-import com.acme.airports.dao.repository.IStoreRepository;
+import com.acme.airports.service.IStoreService;
 import com.acme.airports.service.dto.Stores;
 
 @Component
 public class StartupApplicationListenerExample implements ApplicationListener<ContextRefreshedEvent> {    
+	//@Autowired
+	//private IStoreRepository storeRepository;
+	
 	@Autowired
-	private IStoreRepository storeRepository;
+	private IStoreService storeService;
     
 	public static int counter;
  
@@ -31,11 +29,8 @@ public class StartupApplicationListenerExample implements ApplicationListener<Co
 		TypeReference<Stores> typeReference = new TypeReference<Stores>(){};
 		InputStream inputStream = TypeReference.class.getResourceAsStream("/json/stores.json");
 		try {
-			Stores users = mapper.readValue(inputStream,typeReference);
-			List<Store> stores = users.getStores();
-			stores.removeIf(s -> s.getTodayClose().equals("Gesloten"));
-			storeRepository.saveAll(stores);
-			System.out.println("Users Saved!");
+			Stores storeList = mapper.readValue(inputStream,typeReference);
+			storeService.saveAll(storeList.getStores());
 		} catch (IOException e){
 			System.out.println("Unable to save users: " + e.getMessage());
 		}

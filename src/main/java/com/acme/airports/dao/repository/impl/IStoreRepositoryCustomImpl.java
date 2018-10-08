@@ -1,32 +1,20 @@
 package com.acme.airports.dao.repository.impl;
 
 import java.util.List;
-import java.util.Optional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.acme.airports.dao.entity.Store;
 import com.acme.airports.dao.entity.StoreResult;
-import com.acme.airports.dao.repository.IStoreRepository;
 import com.acme.airports.dao.repository.IStoreRepositoryCustom;
 
-@Repository
-public class StoreRepositoryImpl implements IStoreRepositoryCustom {
+public class IStoreRepositoryCustomImpl implements IStoreRepositoryCustom {
 	@PersistenceContext
 	private EntityManager em;
 	
 	@Override
 	@Transactional
-	public List<StoreResult> findByLatitudeAndLongitude(Double latitude, Double longitude) {
+	public List<StoreResult> findNearestStores(Double latitude, Double longitude) {
 		String baseQuery =   "SELECT * FROM (  "  + 
 				 "   SELECT sap_storeid, city, address_name,  "  + 
 				 "          latitude, longitude, distance, today_open, today_close, location_type  "  + 
