@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import com.acme.airports.dao.entity.Store;
 
 @Repository
-public interface IStoreRepository extends JpaRepository<Store, Integer>{
+public interface IStoreRepository extends JpaRepository<Store, Integer>, IStoreRepositoryCustom{
 	
 }

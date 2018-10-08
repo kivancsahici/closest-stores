@@ -21,7 +21,7 @@ public class StoreServiceImpl implements IStoreService{
 	
 	@Override
 	public NearestStores findNearestStores(Double latitude, Double longitude) {		
-		List<StoreResult> storeList = storeRepository.foo(latitude, longitude);
+		List<StoreResult> storeList = storeRepository.findByLatitudeAndLongitude(latitude, longitude);
 		NearestStores stores = new NearestStores();
 		stores.setNearestStores(storeList);
 		stores.setLatitude(latitude);

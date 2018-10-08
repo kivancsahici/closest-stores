@@ -26,7 +26,7 @@ public class StoreRepositoryImpl implements IStoreRepositoryCustom {
 	
 	@Override
 	@Transactional
-	public List<StoreResult> foo(Double latitude, Double longitude) {
+	public List<StoreResult> findByLatitudeAndLongitude(Double latitude, Double longitude) {
 		String baseQuery =   "SELECT * FROM (  "  + 
 				 "   SELECT sap_storeid, city, address_name,  "  + 
 				 "          latitude, longitude, distance, today_open, today_close, location_type  "  + 
