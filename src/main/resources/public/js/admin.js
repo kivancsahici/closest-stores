@@ -39,6 +39,16 @@
 		    }, timeout);
 		}
 		var successCallbackFuzzySearch = function(data) {
+			if(data.nearestStores.length == 0) {
+				$(".storeList").empty();
+				$("#mapholder").empty();
+				$(".alert").fadeIn();
+				return;	
+			}
+			else {
+				$(".alert").hide();
+			}
+			
 			//reset markers array
 			markers = [];
 			
@@ -55,7 +65,7 @@
 		    }
 		    
 		    map = new google.maps.Map(document.getElementById("mapholder"), myOptions);
-			
+		    
 			var i;
 			for (i = 0; i < data.nearestStores.length; i++) {
 			    var latlon = new google.maps.LatLng(data.nearestStores[i].latitude, data.nearestStores[i].longitude);
@@ -142,7 +152,7 @@
 	
 	$(document).ready(function() {
 		
-		$("button").on("click", function(e){
+		$(".btn.findStores").on("click", function(e){
 			e.preventDefault();	        
 	        var latitude = $("#formInputLatitude").val();
 	        var longitude = $("#formInputLongitude").val();

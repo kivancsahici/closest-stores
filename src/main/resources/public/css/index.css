@@ -1,19 +1,10 @@
-/* Data Tables details button*/
-td.details-control {
-    background: url('../resources/details_open.png') no-repeat center center;
-    cursor: pointer;
-}
-tr.shown td.details-control {
-    background: url('../resources/details_close.png') no-repeat center center;
-}
-
-/* Bootstrap */
-.jumbotron {
-	background-image:url('../icon/jumbo_logo.png');
+.navbar {
+	background-image:url('../icon/jumbo_logo2.png');
 	background-repeat: no-repeat;
 	background-position: center;	
-	background-color: #36538b !important;
+	background-color: #d1d1d2 !important;
 	background-size: contain;
+	height: 60px;
 }
 
 .card {
@@ -67,7 +58,7 @@ body {
 }
 
 .storeList {
-	height: 370px;
+	max-height: 370px;
 	overflow-y: auto;
 }
 
@@ -90,4 +81,10 @@ body {
 .storeList > .list-group > .list-group-item {
 	padding-top: 0.50rem;
 	padding-bottom: 0.50rem;
+}
+
+.alert {
+	display: none;
+	background-color: #ffcc00;
+	color: black;
 }
