@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.acme.airports.dao.entity.Store;
-import com.acme.airports.dao.repository.StoreRepository;
+import com.acme.airports.dao.repository.IStoreRepository;
 import com.acme.airports.service.dto.Stores;
 
 @Component
 public class StartupApplicationListenerExample implements ApplicationListener<ContextRefreshedEvent> {    
 	@Autowired
-	private StoreRepository storeRepository;
+	private IStoreRepository storeRepository;
     
 	public static int counter;
  

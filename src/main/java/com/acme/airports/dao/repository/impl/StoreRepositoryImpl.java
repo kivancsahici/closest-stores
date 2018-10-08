@@ -1,42 +1,32 @@
-package com.acme.airports.controller;
+package com.acme.airports.dao.repository.impl;
 
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Optional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.xml.transform.TransformerException;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.acme.airports.dao.entity.Store;
 import com.acme.airports.dao.entity.StoreResult;
-import com.acme.airports.dao.entity.StoreStatus;
-import com.acme.airports.service.IStoreService;
-import com.acme.airports.service.dto.NearestStores;
-import com.acme.airports.service.impl.StoreServiceImpl;
+import com.acme.airports.dao.repository.IStoreRepository;
+import com.acme.airports.dao.repository.IStoreRepositoryCustom;
 
-@RestController
-@RequestMapping("/jumbo")
-public class BaseController {		
-	@Autowired
-	StoreServiceImpl storeService;
-	
-	/** The entity manager. */
+@Repository
+public class StoreRepositoryImpl implements IStoreRepositoryCustom {
 	@PersistenceContext
-	private EntityManager entityManager;
+	private EntityManager em;
 	
-	@RequestMapping(value = "/stores", method = RequestMethod.GET)
-	public NearestStores getNearestStores(
-			@RequestParam("latitude") double latitude,
-			@RequestParam("longitude") double longitude
-			) throws TransformerException {
-		/*
+	@Override
+	@Transactional
+	public List<StoreResult> foo(Double latitude, Double longitude) {
 		String baseQuery =   "SELECT * FROM (  "  + 
 				 "   SELECT sap_storeid, city, address_name,  "  + 
 				 "          latitude, longitude, distance, today_open, today_close, location_type  "  + 
@@ -70,36 +60,12 @@ public class BaseController {
 				 "   )  "  + 
 				 "  WHERE ROWNUM <= 5  " ; 
 		
-		Query query = entityManager.createNativeQuery(baseQuery, StoreResult.class);
+		Query query = em.createNativeQuery(baseQuery, StoreResult.class);
 		query.setParameter("paramLatitude", latitude);
 		query.setParameter("paramLongitude", longitude);
 		
 		@SuppressWarnings("unchecked")
 		List<StoreResult> storeList = query.getResultList();
-		NearestStores stores = new NearestStores();
-		stores.setNearestStores(storeList);
-		stores.setLatitude(latitude);
-		stores.setLongitude(longitude);
-		
-		//TODO undo comment out
-		LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
-		//LocalTime now = LocalTime.parse("19:10");
-		
-		for(StoreResult result : storeList) {
-						
-			LocalTime from = LocalTime.parse(result.getTodayOpen());
-			LocalTime to = LocalTime.parse(result.getTodayClose());
-			if(now.isAfter(from) && now.isBefore(to)) {
-				if(ChronoUnit.MINUTES.between(now, to) < 60)
-					result.setStoreStatus(StoreStatus.CLOSING_SOON);
-				else
-					result.setStoreStatus(StoreStatus.OPEN);
-			}
-			else
-				result.setStoreStatus(StoreStatus.CLOSED);
-		}
-		return stores;
-		*/
-		return storeService.findNearestStores(latitude, longitude);
+		return storeList;
 	}
 }
