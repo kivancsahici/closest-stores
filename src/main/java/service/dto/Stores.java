@@ -1,7 +1,8 @@
-package com.acme.airports.model;
+package service.dto;
 
 import java.util.List;
 
+import com.acme.airports.dao.entity.Store;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown=true)

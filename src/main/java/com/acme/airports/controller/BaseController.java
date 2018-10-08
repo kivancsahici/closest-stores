@@ -13,9 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.acme.airports.model.NearestStores;
-import com.acme.airports.model.StoreResult;
-import com.acme.airports.model.StoreStatus;
+import com.acme.airports.dao.entity.StoreResult;
+import com.acme.airports.dao.entity.StoreStatus;
+
+import service.dto.NearestStores;
 
 @RestController
 @RequestMapping("/jumbo")
@@ -74,8 +75,8 @@ public class BaseController {
 		stores.setLongitude(longitude);
 		
 		//TODO undo comment out
-		//LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
-		LocalTime now = LocalTime.parse("19:10");
+		LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
+		//LocalTime now = LocalTime.parse("19:10");
 		
 		for(StoreResult result : storeList) {
 						
