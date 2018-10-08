@@ -15,8 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.acme.airports.dao.entity.StoreResult;
 import com.acme.airports.dao.entity.StoreStatus;
-
-import service.dto.NearestStores;
+import com.acme.airports.service.dto.NearestStores;
 
 @RestController
 @RequestMapping("/jumbo")

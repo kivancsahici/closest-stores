@@ -1,4 +1,4 @@
-package service.dto;
+package com.acme.airports.service.dto;
 
 import java.util.List;
 
