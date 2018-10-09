@@ -44,16 +44,14 @@
 
 			var mapholder = document.getElementById('mapholder')
 		    mapholder.style.height = '458px';
-		    mapholder.style.width = '750px';    
+		    mapholder.style.width = '476px';    
 		    
 		    map = new GMaps({
 		    	  el: '#mapholder',
 		    	  zoom: 10,
 		    	  lat: latitude,
 		    	  lng: longitude,
-		    	  mapTypeId:google.maps.MapTypeId.ROADMAP,
-			      mapTypeControl:false,
-			      navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
+		    	  disableDefaultUI: true
 		    });
 		    
 		    var m = map.addMarker({
@@ -128,13 +126,14 @@
 		}
 		
 		var showPosition = function(position)  {
-			JUMBO.initMap(position.coords.latitude, position.coords.longitude);
+			JUMBO.initMap();
+			//JUMBO.initMap(position.coords.latitude, position.coords.longitude);
 		    //searchNearestStores(position.coords.latitude, position.coords.longitude);
 		}
 		
 		var getLocation = function() {
 		    if (navigator.geolocation) {
-		        navigator.geolocation.getCurrentPosition(showPosition, showError);		        
+		        navigator.geolocation.getCurrentPosition(showPosition, showError);
 		    } else { 
 		        x.innerHTML = "Geolocation is not supported by this browser.";
 		    }
