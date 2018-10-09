@@ -16,8 +16,10 @@
 	var JUMBO = (function() {
 		var map;
 		var markers = [];
-		var defaultLatitude = 52.040853;
-		var defaultLongitude = 5.315468;
+		var DEFAULT_LATITUDE = 52.040853;
+		var DEFAULT_LONGITUDE = 5.315468;
+		var latitude;
+		var longitude;
 		var removeMarkers = function(data) {
 			for(var i=0; i < markers.length; i++){
 		        // remove the marker
@@ -39,8 +41,8 @@
 			  $(".storeList").html(templateHTML);
 		}
 		var initMap = function(latitude, longitude) {			
-			var latitude = latitude || defaultLatitude;
-			var longitude = longitude || defaultLongitude;
+			latitude = latitude || DEFAULT_LATITUDE;
+			longitude = longitude || DEFAULT_LONGITUDE;
 
 			var mapholder = document.getElementById('mapholder')
 		    mapholder.style.height = '458px';
@@ -67,15 +69,17 @@
 		    	});
 		    
 		    map.setContextMenu({
-		    	  control: 'marker',
-		    	  options: [{
-		    	    title: 'Find stores around here',
-		    	    name: 'add_marker',
-		    	    action: function(e) {		    	    
-		    	    	JUMBO.searchNearestStores(e.latLng.lat(), e.latLng.lng());
-		    	    }
-		    	  }]
-		    	});
+	    	  control: 'marker',
+	    	  options: [{
+	    	    title: 'Find stores around here',
+	    	    name: 'add_marker',
+	    	    action: function(e) {		    	    
+	    	    	JUMBO.searchNearestStores(e.latLng.lat(), e.latLng.lng());
+	    	    }
+	    	  }]
+	    	});
+		    
+		    searchNearestStores(latitude, longitude);
 		}
 		
 		var addMarkerWithTimeout = function(data, timeout) {			
