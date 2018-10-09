@@ -31,7 +31,8 @@ public class IStoreRepositoryCustomImpl implements IStoreRepositoryCustom {
 				 "     FROM store z  "  + 
 				 "     JOIN (  "  + 
 				 //"           SELECT  42.81  AS latpoint,    -70.81 AS longpoint,  "  + 
-				 "           SELECT  50.0 AS radius,        111.045 AS distance_unit,  "  + 
+				 //"           SELECT  50.0 AS radius,        111.045 AS distance_unit,  "  + 
+				 "           SELECT  25.0 AS radius,        111.045 AS distance_unit,  "  +
 				 "                   57.2957795 AS rad2deg,  "  + 
 				 "                   0.0174532925 AS deg2rad  "  + 
 				 "             FROM  DUAL  "  + 
