@@ -21,7 +21,7 @@ import com.acme.airports.dao.repository.IStoreRepository;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-public class EmployeeRepositoryIntegrationTest {
+public class StoreRepositoryIntegrationTest {
     @Autowired
     private IStoreRepository storeRepo;
  
