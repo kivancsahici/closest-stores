@@ -52,4 +52,9 @@ public class StoreServiceImpl implements IStoreService{
 		return stores;
 	}
 
+	@Override
+	public List<String> findUniqueCities() {
+		return storeRepository.findDistinctCities();
+	}
+
 }

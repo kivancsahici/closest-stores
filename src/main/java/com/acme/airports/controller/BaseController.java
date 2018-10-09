@@ -1,5 +1,7 @@
 package com.acme.airports.controller;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.xml.transform.TransformerException;
@@ -28,5 +30,10 @@ public class BaseController {
 			@RequestParam("longitude") double longitude
 			) throws TransformerException {		
 		return storeService.findNearestStores(latitude, longitude);
+	}
+	
+	@RequestMapping(value = "/cities", method = RequestMethod.GET)
+	public List<String> getUniqueCities() throws TransformerException {		
+		return storeService.findUniqueCities();
 	}
 }
