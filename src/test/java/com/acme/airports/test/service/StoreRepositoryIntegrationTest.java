@@ -27,7 +27,7 @@ public class StoreRepositoryIntegrationTest {
  
     // write test cases here
     @Test
-    public void whenFindByName_thenReturnEmployee() {
+    public void findNearestStores() {
     	
     	
     	List<StoreResult> storeResult = storeRepo.findNearestStores(52.075854, 4.234678);    	
