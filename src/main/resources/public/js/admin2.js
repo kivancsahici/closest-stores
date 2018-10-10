@@ -229,9 +229,19 @@
 			JUMBO.setMaxResult(value);
 		});
 		
-		//todo check jqm project
-		$("#formControlSelectCity").change(function(event){
-			alert($(event.target).val());
+		$(".citySelectionList").on('change', '.custom-select-sm', function(e) {
+			//alert($(e.target).val());
+			$.ajax({
+				type : 'GET',				
+				url: '/jumbo/cities/' + $(e.target).val(),
+				//data: {"latitude": latitude,"longitude": longitude, "radius": radius, "maxResult" : maxResult},
+				dataType : 'json',
+				success : function(data) {
+					console.log(data);
+					//renderCitySelectionList(data)
+				}/*,
+				error : errorCallbackFuzzySearch*/
+			});
 		});
 				
 		$(".btn.findStores").on("click", function(e){
