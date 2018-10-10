@@ -34,6 +34,7 @@
 		    }
 			markers = [];
 		}
+		
 		var renderNearestStores = function (data) {
 			  var storeListTemplate = document.getElementById("store-list-template").innerHTML;
 			  //create template function
@@ -41,6 +42,16 @@
 			  //execute template function with JSON object for the interpolated values			  
 			  var templateHTML = templateFn(data);
 			  $(".storeList").html(templateHTML);
+		}
+		
+		//private function
+		var renderCitySelectionList = function (data) {
+			  var citySelectionListTemplate = $("#city-list-template").html();
+			  //create template function
+			  var templateFn = _.template(citySelectionListTemplate);
+			  //execute template function with JSON object for the interpolated values			  
+			  var templateHTML = templateFn({"nearestStores": data});			  
+			  $(".citySelectionList").html(templateHTML);
 		}
 		var initMap = function(latitude, longitude) {			
 			latitude = latitude || DEFAULT_LATITUDE;
@@ -169,6 +180,20 @@
 			markers[index].setIcon("icon/shopping-cart.png");
 		}
 		
+		var loadCityList = function() {			
+			$.ajax({
+				type : 'GET',				
+				url: '/jumbo/citiess',
+				data: {"latitude": latitude,"longitude": longitude, "radius": radius, "maxResult" : maxResult},
+				dataType : 'json',
+				success : function(data) {
+					//console.log(data);
+					renderCitySelectionList(data)
+				},
+				error : errorCallbackFuzzySearch
+			});
+		}
+ 		
 		//reveal public methods
 		return {
 			showError : showError,
@@ -179,12 +204,15 @@
 			highlightStore: highlightStore,
 			undoHighlightStore: undoHighlightStore,
 			setMaxResult: setMaxResult,
-			setRadius : setRadius
+			setRadius : setRadius,
+			loadCityList : loadCityList
 			
 		};	
 	})();
 	
 	$(document).ready(function() {
+		JUMBO.loadCityList();		
+		
 		//render slider values
 		$("#formControlRadiusValue").html($("#formControlRadius").val() + " km");
 		$("#formControlMaxResultsValue").html($("#formControlMaxResults").val());
@@ -199,6 +227,11 @@
 			var value = $(this).val();
 			$("#formControlMaxResultsValue").html(value);
 			JUMBO.setMaxResult(value);
+		});
+		
+		//todo check jqm project
+		$("#formControlSelectCity").change(function(event){
+			alert($(event.target).val());
 		});
 				
 		$(".btn.findStores").on("click", function(e){
@@ -228,5 +261,5 @@
 			var storeIndex = $(".storeList > .list-group > a").index(this);
 			JUMBO.highlightStore(storeIndex);
 		});
-		JUMBO.initMap();
+		//JUMBO.initMap();
 	} );
