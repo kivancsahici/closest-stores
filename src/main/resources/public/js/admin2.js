@@ -46,7 +46,7 @@
 
 			var mapholder = document.getElementById('mapholder')
 		    mapholder.style.height = '458px';
-		    mapholder.style.width = '476px';    
+		    mapholder.style.width = '528px';    
 		    
 		    map = new GMaps({
 		    	  el: '#mapholder',
@@ -121,7 +121,7 @@
 		var searchNearestStores = function(latitude, longitude) {			
 			$.ajax({
 				type : 'GET',				
-				url: '/jumbo/stores',
+				url: '/jumbo/nearestStores',
 				data: {"latitude": latitude,"longitude": longitude},
 				dataType : 'json',
 				success : successCallbackFuzzySearch,
@@ -182,7 +182,15 @@
 	})();
 	
 	$(document).ready(function() {
-		//JUMBO.initMap();
+		
+		$("#formControlRadius").on("input", function(e){
+			$("#formControlRadiusValue").html($(this).val());			
+		});
+		
+		$("#formControlMaxResults").on("input", function(e){
+			$("#formControlMaxResultsValue").html($(this).val());			
+		});
+				
 		$(".btn.findStores").on("click", function(e){
 			e.preventDefault();
 			JUMBO.getLocation();
@@ -197,7 +205,7 @@
 		 });
 		
 		$(".needs-validation").on("keypress", function(e) {		 
-			 if (event.keyCode == 13) {
+			 if (e.keyCode == 13) {
 				e.preventDefault();	        
 		        var latitude = $("#formInputLatitude").val();
 		        var longitude = $("#formInputLongitude").val();
