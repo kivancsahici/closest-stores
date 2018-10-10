@@ -25,19 +25,19 @@ body {
 }
 
 .bg-combo_market {
-    background: url('../icon/css_sprites.png') 0px -10px;
-    width:130px;
-    height: 50px;
+    background: url('../icon/css_sprites.png') 0px -5px;
+    width: 80px;
+    height: 32px;
 }
 
-.bg-pet_supermarket {
-    width: 50px; height: 50px;
-    background: url('../icon/css_sprites.png') -10px -10px;
+.bg-pup_supermarket {
+    width: 32px; height: 32px;
+    background: url('css_sprites.png') -5px -5px;
 }
 
 .bg-supermarket {
-    width: 50px; height: 50px;
-    background: url('../icon/css_sprites.png') -80px -10px;
+    width: 32px; height: 32px;
+    background: url('css_sprites.png') -47px -5px;
 }
 
 .storeList > .list-group > .list-group-item {
@@ -45,6 +45,10 @@ body {
 	padding-bottom: 0.50rem;
 }
 
+.storeList > .list-group > .list-group-item .addressName {
+	font-size: 0.8rem;
+	font-weight: bold;
+}
 .alert {
 	display: none;
 	background-color: #ffcc00;
