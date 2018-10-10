@@ -8,7 +8,7 @@ import com.acme.airports.dao.entity.Store;
 
 @Repository
 public interface IStoreRepository extends JpaRepository<Store, Integer>, IStoreRepositoryCustom{
-	 @Query("SELECT DISTINCT(a.city) FROM Store a")
+	 @Query("SELECT DISTINCT(a.city) FROM Store a ORDER BY a.city")
 	 List<String> findDistinctCities();
 	 	 	 
 	 List<Store> findByCity(String city);
