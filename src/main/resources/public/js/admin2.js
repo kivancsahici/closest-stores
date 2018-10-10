@@ -131,8 +131,8 @@
 		}
 		
 		var showPosition = function(position)  {
-			JUMBO.initMap();
-			//JUMBO.initMap(position.coords.latitude, position.coords.longitude);
+			//TODO replace with below
+		    searchNearestStores(52.040853, 5.315468);
 		    //searchNearestStores(position.coords.latitude, position.coords.longitude);
 		}
 		
@@ -203,8 +203,6 @@
 				
 		$(".btn.findStores").on("click", function(e){
 			e.preventDefault();
-			var radius = $("#formControlRadius").val();
-			var maxResults = $("#formControlMaxResults").val(); 
 			JUMBO.getLocation();
 		 });
 		
