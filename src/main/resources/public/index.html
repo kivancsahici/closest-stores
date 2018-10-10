@@ -12,29 +12,6 @@
 <body>
 	<nav class="navbar navbar-light bg-light"></nav>
 	<div class="container-fluid">
-		<div class="row justify-content-center">
-			<div class="col-lg-6">
-				<form class="needs-validation">
-					<div class="form-row">
-						<div class="col-lg3 col-md-6 mb-3">
-							<input type="text" class="form-control" id="formInputLatitude" value="52.040853" placeholder="Enter latitude" required>
-							<div class="valid-feedback">Looks good!</div>
-							<div class="invalid-feedback">Invalid latitude</div>
-						</div>
-						<div class="col-lg3 col-md-6 mb-3">
-							<input type="text" class="form-control" id="formInputLongitude" value="5.315468" placeholder="Enter longitude" required>
-							<div class="valid-feedback">Looks good!</div>
-							<div class="invalid-feedback">Invalid longitude</div>
-						</div>
-					</div>
-					<div class="form-actions" style="text-align: center;">
-						<button type="submit" class="btn findStores">Find Stores Around Me</button>
-					</div>
-				</form>
-				<div class="alert alert-warning alert-dismissible mt-2" role="alert">There are no Jumbo stores around you</div>
-			</div>
-		</div>
-
 		<div class="d-flex justify-content-center">
 			<div class="col-md-12 col-lg-4">
 				<div class="row">
@@ -57,7 +34,7 @@
 										<label for="formControlMaxResults">Max Results</label> <input type="range" class="form-control-range" id="formControlMaxResults" min="5" max="15"> <span
 											id="formControlMaxResultsValue"></span>
 									</div>
-									<button type="submit" class="btn btn-primary btn-sm">Find Closest Stores</button>
+									<button type="submit" class="btn btn-primary btn-sm findStores">Find Closest Stores</button>
 								</form>
 							</div>
 							<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">2</div>

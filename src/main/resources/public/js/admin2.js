@@ -12,7 +12,6 @@
 	    });
 	};
 	
-	
 	var JUMBO = (function() {
 		var map;
 		var markers = [];
@@ -20,6 +19,14 @@
 		var DEFAULT_LONGITUDE = 5.315468;
 		var latitude;
 		var longitude;
+		var radius;
+		var maxResult;
+		var setRadius = function(paramRadius) {
+			radius = paramRadius;
+		}
+		var setMaxResult = function(paramMaxResult) {
+			maxResult = paramMaxResult;
+		}
 		var removeMarkers = function(data) {
 			for(var i=0; i < markers.length; i++){
 		        // remove the marker
@@ -29,15 +36,10 @@
 		}
 		var renderNearestStores = function (data) {
 			  var storeListTemplate = document.getElementById("store-list-template").innerHTML;
-
 			  //create template function
 			  var templateFn = _.template(storeListTemplate);
-
 			  //execute template function with JSON object for the interpolated values			  
 			  var templateHTML = templateFn(data);
-
-			  //append rather than replace!
-			  //commentsDiv.innerHTML = templateHTML;
 			  $(".storeList").html(templateHTML);
 		}
 		var initMap = function(latitude, longitude) {			
@@ -54,22 +56,10 @@
 		    	  lat: latitude,
 		    	  lng: longitude,
 		    	  disableDefaultUI: true
-		    });
-		    
-		    var m = map.addMarker({
-		    	  lat: latitude,
-		    	  lng: longitude,
-		    	  infoWindow: {
-		    		content: '<p>You are here</p>'
-		    	  },
-		    	  draggable: true,
-		    	  icon: {
-				       url: "icon/blue_pin.png"
-				  }
-		    	});
+		    });		    		    
 		    
 		    map.setContextMenu({
-	    	  control: 'marker',
+	    	  control: 'map',
 	    	  options: [{
 	    	    title: 'Find stores around here',
 	    	    name: 'add_marker',
@@ -79,7 +69,7 @@
 	    	  }]
 	    	});
 		    
-		    searchNearestStores(latitude, longitude);
+		    //searchNearestStores(latitude, longitude);
 		}
 		
 		var addMarkerWithTimeout = function(data, timeout) {			
@@ -94,7 +84,18 @@
 		    }, timeout);
 		}
 		var successCallbackFuzzySearch = function(data) {
-			removeMarkers();			
+			removeMarkers();
+			markers.push(map.addMarker({
+		    	  lat: data.latitude,
+		    	  lng: data.longitude,
+		    	  infoWindow: {
+		    		content: '<p>You are here</p>'
+		    	  },
+		    	  draggable: false,
+		    	  icon: {
+				       url: "icon/blue_pin.png"
+				  }
+		    	}));
 			for (var i = 0; i < data.nearestStores.length; i++) {			    
 			    addMarkerWithTimeout(data.nearestStores[i], 300 + (i * 500));
 			}
@@ -105,12 +106,12 @@
 			      bounds.push(new google.maps.LatLng(markers[i].internalPosition.lat(), markers[i].internalPosition.lng()));
 			    }
 			    map.fitLatLngBounds(bounds);			    
-		    }, 3000);
+		    }, 300 + data.nearestStores.length * 500);
 			
 			
 			window.setTimeout(function() {				
 				JUMBO.renderNearestStores(data);			    
-		    }, 3100);
+		    }, 300 + data.nearestStores.length * 500);
 	
 		}
 		
@@ -122,7 +123,7 @@
 			$.ajax({
 				type : 'GET',				
 				url: '/jumbo/nearestStores',
-				data: {"latitude": latitude,"longitude": longitude},
+				data: {"latitude": latitude,"longitude": longitude, "radius": radius, "maxResult" : maxResult},
 				dataType : 'json',
 				success : successCallbackFuzzySearch,
 				error : errorCallbackFuzzySearch
@@ -176,7 +177,9 @@
 			renderNearestStores: renderNearestStores,
 			initMap : initMap,
 			highlightStore: highlightStore,
-			undoHighlightStore: undoHighlightStore
+			undoHighlightStore: undoHighlightStore,
+			setMaxResult: setMaxResult,
+			setRadius : setRadius
 			
 		};	
 	})();
@@ -184,24 +187,22 @@
 	$(document).ready(function() {
 		
 		$("#formControlRadius").on("input", function(e){
-			$("#formControlRadiusValue").html($(this).val());			
+			var value = $(this).val();
+			$("#formControlRadiusValue").html(value);
+			JUMBO.setRadius(value);
 		});
 		
 		$("#formControlMaxResults").on("input", function(e){
-			$("#formControlMaxResultsValue").html($(this).val());			
+			var value = $(this).val();
+			$("#formControlMaxResultsValue").html(value);
+			JUMBO.setMaxResult(value);
 		});
 				
 		$(".btn.findStores").on("click", function(e){
 			e.preventDefault();
+			var radius = $("#formControlRadius").val();
+			var maxResults = $("#formControlMaxResults").val(); 
 			JUMBO.getLocation();
-			/*
-	        var latitude = $("#formInputLatitude").val();
-	        var longitude = $("#formInputLongitude").val();
-	        JUMBO.searchNearestStores(latitude, longitude);
-	        //$(".needs-validation input").toggleClass("is-invalid", true);
-	        
-	        return false;
-	        */
 		 });
 		
 		$(".needs-validation").on("keypress", function(e) {		 
@@ -218,14 +219,13 @@
 		$(".storeList").on('mouseleave', '.list-group a', function(e) {
 			e.preventDefault();
 			var storeIndex = $(".storeList > .list-group > a").index(this);
-			JUMBO.undoHighlightStore(storeIndex);
-			//JUMBO.markers[storeIndex].setIcon("icon/shopping-cart-1.png");
+			JUMBO.undoHighlightStore(storeIndex);			
 		});
 		
 		$(".storeList").on('mouseover', '.list-group a', function(e) {
 			e.preventDefault();
 			var storeIndex = $(".storeList > .list-group > a").index(this);
 			JUMBO.highlightStore(storeIndex);
-			//JUMBO.markers[storeIndex].setIcon("icon/shopping-cart.png");		
 		});
+		JUMBO.initMap();
 	} );
