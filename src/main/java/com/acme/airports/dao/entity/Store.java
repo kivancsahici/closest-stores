@@ -1,12 +1,19 @@
 package com.acme.airports.dao.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Store {
+@NamedNativeQuery(name = "Store.fetchByCity", query = "SELECT sap_StoreID, city, postal_Code, street, address_Name, latitude, longitude, today_Close, today_Open, location_Type FROM Store a where a.city =:paramCity", 
+resultClass=Store.class)
+public class Store implements Serializable{
+	private static final long serialVersionUID = 2976102889581906993L;
+	
 	@Id
     private Integer sapStoreID;
 	private String city;

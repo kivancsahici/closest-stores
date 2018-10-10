@@ -19,14 +19,19 @@ public class StoreServiceImpl implements IStoreService{
 	IStoreRepository storeRepository;
 	
 	@Override
-	public List<Store> saveAll(List<Store> storeList) {
+	public List<Store> findStoresByCity(String city) {
+		return storeRepository.fetchByCity(city);
+	}
+	
+	@Override
+	public List<Store> saveAll(List<Store> storeList) {				
 		storeList.removeIf(s -> s.getTodayClose().equals("Gesloten"));
 		return storeRepository.saveAll(storeList);
 	}
 	
 	@Override
-	public NearestStores findNearestStores(Double latitude, Double longitude) {		
-		List<StoreResult> storeList = storeRepository./*findByLatitudeAndLongitude*/findNearestStores(latitude, longitude);
+	public NearestStores findNearestStores(Double latitude, Double longitude, Integer radius, Integer maxResult) {		
+		List<StoreResult> storeList = storeRepository.findNearestStores(latitude, longitude, radius, maxResult);
 		NearestStores stores = new NearestStores();
 		stores.setNearestStores(storeList);
 		stores.setLatitude(latitude);
@@ -51,7 +56,7 @@ public class StoreServiceImpl implements IStoreService{
 		}
 		return stores;
 	}
-
+	
 	@Override
 	public List<String> findUniqueCities() {
 		return storeRepository.findDistinctCities();
