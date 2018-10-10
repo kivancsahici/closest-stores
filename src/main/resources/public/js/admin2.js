@@ -19,8 +19,8 @@
 		var DEFAULT_LONGITUDE = 5.315468;
 		var latitude;
 		var longitude;
-		var radius;
-		var maxResult;
+		var radius = 25;
+		var maxResult = 5;
 		var setRadius = function(paramRadius) {
 			radius = paramRadius;
 		}
@@ -185,10 +185,13 @@
 	})();
 	
 	$(document).ready(function() {
+		//render slider values
+		$("#formControlRadiusValue").html($("#formControlRadius").val() + " km");
+		$("#formControlMaxResultsValue").html($("#formControlMaxResults").val());
 		
 		$("#formControlRadius").on("input", function(e){
 			var value = $(this).val();
-			$("#formControlRadiusValue").html(value);
+			$("#formControlRadiusValue").html(value + " km");
 			JUMBO.setRadius(value);
 		});
 		
