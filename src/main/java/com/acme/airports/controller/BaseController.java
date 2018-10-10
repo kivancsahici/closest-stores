@@ -6,12 +6,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.xml.transform.TransformerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.acme.airports.dao.entity.Store;
-import com.acme.airports.dao.repository.IStoreRepository;
 import com.acme.airports.service.IStoreService;
 import com.acme.airports.service.dto.NearestStores;
 
@@ -21,17 +21,9 @@ public class BaseController {
 	@Autowired
 	IStoreService storeService;
 	
-	@Autowired
-	IStoreRepository storeRepo;
-	
 	/** The entity manager. */
 	@PersistenceContext
-	private EntityManager entityManager;
-	
-	@RequestMapping(value = "/stores", method = RequestMethod.GET)
-	public List<Store> getStores(@RequestParam(value = "city") final String city) throws TransformerException {			
-		return storeService.findStoresByCity(city);		
-	}
+	private EntityManager entityManager;	
 
 	@RequestMapping(value = "/nearestStores", method = RequestMethod.GET)
 	public NearestStores getNearestStores(
@@ -43,8 +35,23 @@ public class BaseController {
 			return storeService.findNearestStores(latitude, longitude, radius, maxResult);
 	}
 	
-	@RequestMapping(value = "/cities", method = RequestMethod.GET)
+	@RequestMapping(value = "/citiess", method = RequestMethod.GET)
 	public List<String> getUniqueCities() throws TransformerException {		
 		return storeService.findUniqueCities();
+	}
+	
+	@RequestMapping(value = "/cities/{cityName}", method = RequestMethod.GET)
+	public List<Store> getStoresByCity(
+			@PathVariable("cityName") String cityName
+			) throws TransformerException {		
+		return storeService.findByCity(cityName);
+	}
+	
+	@RequestMapping(value = "/cities/{cityName}/streets/{streetName}", method = RequestMethod.GET)
+	public List<Store> getStoresByCityandStreet(
+			@PathVariable("cityName") String cityName,
+			@PathVariable("streetName") String streetName
+			) throws TransformerException {		
+		return storeService.findByCityAndStreet(cityName, streetName);
 	}
 }

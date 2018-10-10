@@ -5,8 +5,9 @@ import com.acme.airports.dao.entity.Store;
 import com.acme.airports.service.dto.NearestStores;
 
 public interface IStoreService {
-	public NearestStores findNearestStores(Double latitude, Double longitude, Integer radius, Integer maxResult);
-	public List<Store> saveAll(List<Store> storeList);
-	public List<String> findUniqueCities();
-	public List<Store> findStoresByCity(String city);
+	NearestStores findNearestStores(Double latitude, Double longitude, Integer radius, Integer maxResult);
+	List<Store> saveAll(List<Store> storeList);
+	List<String> findUniqueCities();
+	List<Store> findByCity(String city);
+	List<Store> findByCityAndStreet(String city, String street);
 }

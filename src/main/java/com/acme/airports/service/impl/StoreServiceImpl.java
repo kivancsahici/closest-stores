@@ -16,17 +16,22 @@ import com.acme.airports.service.dto.NearestStores;
 @Service
 public class StoreServiceImpl implements IStoreService{
 	@Autowired
-	IStoreRepository storeRepository;
-	
-	@Override
-	public List<Store> findStoresByCity(String city) {
-		return storeRepository.fetchByCity(city);
-	}
+	IStoreRepository storeRepository;	
 	
 	@Override
 	public List<Store> saveAll(List<Store> storeList) {				
 		storeList.removeIf(s -> s.getTodayClose().equals("Gesloten"));
 		return storeRepository.saveAll(storeList);
+	}
+	
+	@Override
+	public List<Store> findByCity(String city) {
+		return storeRepository.findByCity(city);
+	}
+	
+	@Override
+	public List<Store> findByCityAndStreet(String city, String street) {
+		return storeRepository.findByCityAndStreet(city, street);
 	}
 	
 	@Override
