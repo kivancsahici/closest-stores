@@ -4,7 +4,10 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+
+import com.acme.airports.controller.Views;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown=true)
@@ -14,8 +17,11 @@ public class Store implements Serializable{
 	@Id
     private Integer sapStoreID;
 	private String city;
-	private String postalCode;	
+	private String postalCode;
+	
+	@JsonView(Views.Lazy.class)
 	private String street;
+	
     private String addressName;
     private double longitude;
     private double latitude;

@@ -59,7 +59,7 @@
 
 			var mapholder = document.getElementById('mapholder')
 		    mapholder.style.height = '458px';
-		    mapholder.style.width = '528px';    
+		    mapholder.style.width = '420px';    
 		    
 		    map = new GMaps({
 		    	  el: '#mapholder',
@@ -95,6 +95,10 @@
 		    }, timeout);
 		}
 		var successCallbackFuzzySearch = function(data) {
+			if(data.nearestStores.length == 0) {
+				alert("sorry");
+				return false;
+			}
 			removeMarkers();
 			markers.push(map.addMarker({
 		    	  lat: data.latitude,
@@ -187,7 +191,6 @@
 				data: {"latitude": latitude,"longitude": longitude, "radius": radius, "maxResult" : maxResult},
 				dataType : 'json',
 				success : function(data) {
-					//console.log(data);
 					renderCitySelectionList(data)
 				},
 				error : errorCallbackFuzzySearch
@@ -229,16 +232,35 @@
 			JUMBO.setMaxResult(value);
 		});
 		
-		$(".citySelectionList").on('change', '.custom-select-sm', function(e) {
+		$(".streetSelectionList").on('change', '.custom-select', function(e) {
+			var index = $(".streetSelectionList .custom-select").prop('selectedIndex');
+			if(index == 0)
+				$("#v-pills-profile .detailedSearch").prop('disabled', true);
+			else
+				$("#v-pills-profile .detailedSearch").prop('disabled', false);
+		});
+		
+		$(".citySelectionList").on('change', '.custom-select', function(e) {
 			//alert($(e.target).val());
+			var index = $(".citySelectionList .custom-select").prop('selectedIndex');
+			if(index == 0) {
+				$("#v-pills-profile .detailedSearch").prop('disabled', true);
+				var temp = "<option selected>Select street</option>";
+				$(".streetSelectionList select").html(temp);
+				return false;
+			}
 			$.ajax({
 				type : 'GET',				
 				url: '/jumbo/cities/' + $(e.target).val(),
-				//data: {"latitude": latitude,"longitude": longitude, "radius": radius, "maxResult" : maxResult},
 				dataType : 'json',
 				success : function(data) {
-					console.log(data);
-					//renderCitySelectionList(data)
+					if(data.length > 0){
+						var temp = "<option selected>Select street</option>";
+						for(var i = 0; i < data.length; i++) {
+							temp += "<option>" + data[i].street + "</option>";
+						}
+						$(".streetSelectionList select").html(temp);
+					}
 				}/*,
 				error : errorCallbackFuzzySearch*/
 			});
@@ -249,6 +271,20 @@
 			JUMBO.getLocation();
 		 });
 		
+		$(".btn.detailedSearch").on("click", function(e){
+			e.preventDefault();
+			var city = $(".citySelectionList .custom-select").val();
+			var street = $(".streetSelectionList .custom-select").val();
+			$.ajax({
+				type : 'GET',				
+				url: '/jumbo/cities/' + city + "/streets/" + street,
+				dataType : 'json',
+				success : function(data) {
+					console.log(data);
+				}/*,
+				error : errorCallbackFuzzySearch*/
+			});
+		});
 		$(".needs-validation").on("keypress", function(e) {		 
 			 if (e.keyCode == 13) {
 				e.preventDefault();	        
@@ -263,13 +299,13 @@
 		$(".storeList").on('mouseleave', '.list-group a', function(e) {
 			e.preventDefault();
 			var storeIndex = $(".storeList > .list-group > a").index(this);
-			JUMBO.undoHighlightStore(storeIndex);			
+			JUMBO.undoHighlightStore(storeIndex + 1);			
 		});
 		
 		$(".storeList").on('mouseover', '.list-group a', function(e) {
 			e.preventDefault();
 			var storeIndex = $(".storeList > .list-group > a").index(this);
-			JUMBO.highlightStore(storeIndex);
+			JUMBO.highlightStore(storeIndex + 1);
 		});
 		//JUMBO.initMap();
 	} );

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.acme.airports.dao.entity.Store;
 import com.acme.airports.service.IStoreService;
 import com.acme.airports.service.dto.NearestStores;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
 @RequestMapping("/jumbo")
@@ -40,6 +41,7 @@ public class BaseController {
 		return storeService.findUniqueCities();
 	}
 	
+	@JsonView(Views.Lazy.class)
 	@RequestMapping(value = "/cities/{cityName}", method = RequestMethod.GET)
 	public List<Store> getStoresByCity(
 			@PathVariable("cityName") String cityName

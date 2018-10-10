@@ -32,12 +32,12 @@ body {
 
 .bg-pup_supermarket {
     width: 32px; height: 32px;
-    background: url('css_sprites.png') -5px -5px;
+    background: url('../icon/css_sprites.png') -5px -5px;
 }
 
 .bg-supermarket {
     width: 32px; height: 32px;
-    background: url('css_sprites.png') -47px -5px;
+    background: url('../icon/css_sprites.png') -47px -5px;
 }
 
 .storeList > .list-group > .list-group-item {
