@@ -6,4 +6,4 @@ addons:
       secure: 826c18e273f8b6410acda0c8577a50daea86b414
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=closest-stores-travis-ci-key -Dsonar.organization=innuendocornelius-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=826c18e273f8b6410acda0c8577a50daea86b414
