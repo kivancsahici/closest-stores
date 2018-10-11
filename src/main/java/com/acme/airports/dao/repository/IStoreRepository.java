@@ -11,6 +11,6 @@ public interface IStoreRepository extends JpaRepository<Store, Integer>, IStoreR
 	 @Query("SELECT DISTINCT(a.city) FROM Store a ORDER BY a.city")
 	 List<String> findDistinctCities();
 	 	 	 
-	 List<Store> findByCity(String city);
-	 List<Store> findByCityAndStreet(String city, String street);
+	 List<Store> findByCityOrderByStreet(String city);
+	 List<Store> findByCityAndStreetOrderByStreet(String city, String street);
 }

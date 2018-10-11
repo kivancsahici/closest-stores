@@ -26,12 +26,12 @@ public class StoreServiceImpl implements IStoreService{
 	
 	@Override
 	public List<Store> findByCity(String city) {
-		return storeRepository.findByCity(city);
+		return storeRepository.findByCityOrderByStreet(city);
 	}
 	
 	@Override
 	public List<Store> findByCityAndStreet(String city, String street) {
-		return storeRepository.findByCityAndStreet(city, street);
+		return storeRepository.findByCityAndStreetOrderByStreet(city, street);
 	}
 	
 	@Override
