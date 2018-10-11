@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.acme.airports.dao.entity.Store;
 import com.acme.airports.dao.entity.StoreResult;
 import com.acme.airports.dao.repository.IStoreRepository;
 
@@ -29,15 +30,18 @@ public class StoreRepositoryIntegrationTest {
     @Test
     public void findNearestStores() {
     	
-    	
-    	List<StoreResult> storeResult = storeRepo.findNearestStores(52.075854, 4.234678);    	
+    	List<Store> retval = storeRepo.findByCityOrderByStreet("Alkmaar");
+    	for(Store store : retval) {
+    		System.out.println(store.getAddressName());
+    	}/*
+    	List<StoreResult> storeResult = storeRepo.findNearestStores(52.075854, 4.234678, null, null);    	
         assertThat(storeResult, hasSize(5));
         
-        storeResult = storeRepo.findNearestStores(51.497644, 7.393050);
+        storeResult = storeRepo.findNearestStores(51.497644, 7.393050, null, null);
         assertThat(storeResult, hasSize(0));
         
-        storeResult = storeRepo.findNearestStores(51.823928, 6.735862);
+        storeResult = storeRepo.findNearestStores(51.823928, 6.735862, null, null);
         assertThat(storeResult, hasSize(4));
-    	
+    	*/
     }
 }
