@@ -31,9 +31,10 @@ public class BaseController {
 			@RequestParam("latitude") final Double latitude,
 			@RequestParam("longitude") final Double longitude,	
 			@RequestParam(value = "radius",  defaultValue = "25") final Integer radius,
-			@RequestParam(value = "maxResult", defaultValue = "5") final Integer maxResult
+			@RequestParam(value = "maxResult", defaultValue = "5") final Integer maxResult,
+			@RequestParam(value = "showOpen", required = false) final Boolean showOpen
 			) throws TransformerException {		
-			return storeService.findNearestStores(latitude, longitude, radius, maxResult);
+			return storeService.findNearestStores(latitude, longitude, radius, maxResult, showOpen);
 	}
 	
 	@RequestMapping(value = "/cities", method = RequestMethod.GET)

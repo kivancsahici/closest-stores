@@ -69,16 +69,12 @@ public class StoreServiceImpl implements IStoreService{
 	}
 	
 	@Override
-	public NearestStores findNearestStores(Double latitude, Double longitude, Integer radius, Integer maxResult) {		
+	public NearestStores findNearestStores(Double latitude, Double longitude, Integer radius, Integer maxResult, Boolean showOpen) {		
 		List<StoreResult> storeList = storeRepository.findNearestStores(latitude, longitude, radius, maxResult);
-		NearestStores stores = new NearestStores();
-		stores.setNearestStores(storeList);
-		stores.setLatitude(latitude);
-		stores.setLongitude(longitude);
-		
+				
 		//TODO undo comment out
-		LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
-		//LocalTime now = LocalTime.parse("19:10");
+		//LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
+		LocalTime now = LocalTime.parse("20:10");
 		
 		for(StoreResult result : storeList) {
 						
@@ -93,7 +89,14 @@ public class StoreServiceImpl implements IStoreService{
 			else
 				result.setStoreStatus(StoreStatus.CLOSED);
 		}
-		return stores;
+		if(showOpen == true)
+			storeList.removeIf(s -> s.getStoreStatus().equals(StoreStatus.CLOSED));
+		
+		NearestStores nearestStores = new NearestStores();
+		nearestStores.setNearestStores(storeList);
+		nearestStores.setLatitude(latitude);
+		nearestStores.setLongitude(longitude);
+		return nearestStores;
 	}
 	
 	@Override

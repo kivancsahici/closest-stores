@@ -22,6 +22,11 @@
 		var radius = 25;
 		var maxResult = 5;
 		var detailedSearchOn = false;
+		var showOpen = false; //applicable for geo search only
+		
+		var setShowOpen = function(param) {
+			showOpen = param;
+		}
 		var getMap = function() {
 			return map;
 		}
@@ -177,7 +182,7 @@
 			$.ajax({
 				type : 'GET',
 				url: '/geoapi/v1/stores/by_geocoord.json',
-				data: {"latitude": latitude,"longitude": longitude, "radius": radius, "maxResult" : maxResult},
+				data: {"latitude": latitude,"longitude": longitude, "radius": radius, "maxResult" : maxResult, "showOpen" : showOpen},
 				dataType : 'json',
 				success : successCallbackGeoSearch,
 				error : errorCallbackFuzzySearch
@@ -254,7 +259,8 @@
 			setRadius : setRadius,
 			loadCityList : loadCityList,
 			successCallbackDetailedSearch: successCallbackDetailedSearch,
-			getMap: getMap
+			getMap: getMap,
+			setShowOpen: setShowOpen
 			
 		};	
 	})();
@@ -313,8 +319,16 @@
 				error : errorCallbackFuzzySearch*/
 			});
 		});
-				
-		$(".btn.findStores").on("click", function(e){
+		
+		$('#showOpenStores').change(function() {		       
+		    if (this.checked) {
+		        JUMBO.setShowOpen(true); 
+		    } else {
+		    	JUMBO.setShowOpen(false);
+		    }
+		});
+		
+		$(".btn.findStores").on("click", function(e) {			
 			e.preventDefault();
 			JUMBO.getLocation();
 		 });
