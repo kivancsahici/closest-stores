@@ -17,7 +17,7 @@ import com.acme.airports.service.dto.NearestStores;
 import com.fasterxml.jackson.annotation.JsonView;
 
 @RestController
-@RequestMapping("/jumbo")
+@RequestMapping("/geoapi/v1")
 public class BaseController {		
 	@Autowired
 	IStoreService storeService;
@@ -26,7 +26,7 @@ public class BaseController {
 	@PersistenceContext
 	private EntityManager entityManager;	
 
-	@RequestMapping(value = "/nearestStores", method = RequestMethod.GET)
+	@RequestMapping(value = "/stores/by_geocoord.json", method = RequestMethod.GET)
 	public NearestStores getNearestStores(
 			@RequestParam("latitude") final Double latitude,
 			@RequestParam("longitude") final Double longitude,	
@@ -36,23 +36,23 @@ public class BaseController {
 			return storeService.findNearestStores(latitude, longitude, radius, maxResult);
 	}
 	
-	@RequestMapping(value = "/citiess", method = RequestMethod.GET)
+	@RequestMapping(value = "/cities", method = RequestMethod.GET)
 	public List<String> getUniqueCities() throws TransformerException {		
 		return storeService.findUniqueCities();
 	}
 	
 	@JsonView(Views.Lazy.class)
-	@RequestMapping(value = "/cities/{cityName}", method = RequestMethod.GET)
-	public List<Store> getStoresByCity(
-			@PathVariable("cityName") String cityName
+	@RequestMapping(value = "/cities/{city}", method = RequestMethod.GET)
+	public List<Store> getCity(
+			@PathVariable("city") String cityName
 			) throws TransformerException {		
 		return storeService.findByCity(cityName);
 	}
 	
-	@RequestMapping(value = "/cities/{cityName}/streets/{streetName}", method = RequestMethod.GET)
+	@RequestMapping(value = "/stores/search.json", method = RequestMethod.GET)
 	public List<Store> getStoresByCityandStreet(
-			@PathVariable("cityName") String cityName,
-			@PathVariable("streetName") String streetName
+			@RequestParam("city") String cityName,
+			@RequestParam("street") String streetName
 			) throws TransformerException {		
 		return storeService.findByCityAndStreet(cityName, streetName);
 	}

@@ -137,7 +137,8 @@
 		var searchNearestStores = function(latitude, longitude) {			
 			$.ajax({
 				type : 'GET',				
-				url: '/jumbo/nearestStores',
+				//url: '/jumbo/nearestStores',
+				url: '/geoapi/v1/stores/by_geocoord.json',
 				data: {"latitude": latitude,"longitude": longitude, "radius": radius, "maxResult" : maxResult},
 				dataType : 'json',
 				success : successCallbackFuzzySearch,
@@ -187,8 +188,8 @@
 		var loadCityList = function() {			
 			$.ajax({
 				type : 'GET',				
-				url: '/jumbo/citiess',
-				data: {"latitude": latitude,"longitude": longitude, "radius": radius, "maxResult" : maxResult},
+				url: '/geoapi/v1/cities',
+				//data: {"latitude": latitude,"longitude": longitude, "radius": radius, "maxResult" : maxResult},
 				dataType : 'json',
 				success : function(data) {
 					renderCitySelectionList(data)
@@ -251,7 +252,7 @@
 			}
 			$.ajax({
 				type : 'GET',				
-				url: '/jumbo/cities/' + $(e.target).val(),
+				url: '/geoapi/v1/cities/' + $(e.target).val(),
 				dataType : 'json',
 				success : function(data) {
 					if(data.length > 0){
@@ -276,8 +277,13 @@
 			var city = $(".citySelectionList .custom-select").val();
 			var street = $(".streetSelectionList .custom-select").val();
 			$.ajax({
-				type : 'GET',				
-				url: '/jumbo/cities/' + city + "/streets/" + street,
+				type : 'GET',
+				url: '/geoapi/v1/stores/search.json',
+				data: {
+					"city": city,
+					"street": street
+				},
+				//url: '/jumbo/cities/' + city + "/streets/" + street,
 				dataType : 'json',
 				success : function(data) {
 					console.log(data);
@@ -307,5 +313,5 @@
 			var storeIndex = $(".storeList > .list-group > a").index(this);
 			JUMBO.highlightStore(storeIndex + 1);
 		});
-		//JUMBO.initMap();
+		JUMBO.initMap();
 	} );
