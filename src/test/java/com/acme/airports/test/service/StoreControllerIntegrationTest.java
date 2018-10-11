@@ -23,10 +23,10 @@ public class StoreControllerIntegrationTest {
     @Test
     public void findNearestStores()
       throws Exception {
-        mvc.perform(get("/jumbo/stores?latitude=52.040853&longitude=5.315468")
+        mvc.perform(get("/geoapi/v1/stores/by_geocoord.json?latitude=52.040853&longitude=5.315468&radius=25&maxResult=5&showOpen=false")
           .contentType(MediaType.APPLICATION_JSON))
           .andExpect(status().isOk())
-          .andExpect(jsonPath("$.nearestStores").isArray())
-          .andExpect(jsonPath("$.nearestStores").isNotEmpty());
+          .andExpect(jsonPath("$.stores").isArray())
+          .andExpect(jsonPath("$.stores").isNotEmpty());
     }
 }
