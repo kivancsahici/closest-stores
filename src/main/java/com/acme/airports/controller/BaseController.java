@@ -50,7 +50,7 @@ public class BaseController {
 	}
 	
 	@RequestMapping(value = "/stores/search.json", method = RequestMethod.GET)
-	public List<Store> getStoresByCityandStreet(
+	public NearestStores getStoresByCityandStreet(
 			@RequestParam("city") String cityName,
 			@RequestParam("street") String streetName
 			) throws TransformerException {		

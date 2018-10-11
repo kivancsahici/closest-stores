@@ -50,7 +50,7 @@
 			  //create template function
 			  var templateFn = _.template(citySelectionListTemplate);
 			  //execute template function with JSON object for the interpolated values			  
-			  var templateHTML = templateFn({"nearestStores": data});			  
+			  var templateHTML = templateFn({"stores": data});			  
 			  $(".citySelectionList").html(templateHTML);
 		}
 		var initMap = function(latitude, longitude) {			
@@ -93,6 +93,43 @@
 					  animation: google.maps.Animation.DROP
 			    	}));
 		    }, timeout);
+		}
+		var successCallbackDetailedSearch = function(data) {
+			if(data.stores.length == 0) {
+				alert("sorry");
+				return false;
+			}
+			removeMarkers();
+			/*
+			markers.push(map.addMarker({
+		    	  lat: data.latitude,
+		    	  lng: data.longitude,
+		    	  infoWindow: {
+		    		content: '<p>You are here</p>'
+		    	  },
+		    	  draggable: false,
+		    	  icon: {
+				       url: "icon/blue_pin.png"
+				  }
+		    	}));
+		    */
+			for (var i = 0; i < data.stores.length; i++) {			    
+			    addMarkerWithTimeout(data.stores[i], 300 + (i * 500));
+			}
+							    			
+			window.setTimeout(function() {				
+				var bounds = [];
+			    for (var i = 0; i < markers.length; i++) {			     			      
+			      bounds.push(new google.maps.LatLng(markers[i].internalPosition.lat(), markers[i].internalPosition.lng()));
+			    }
+			    map.fitLatLngBounds(bounds);			    
+		    }, 300 + data.stores.length * 500);
+			
+			
+			window.setTimeout(function() {				
+				JUMBO.renderNearestStores(data);			    
+		    }, 300 + data.stores.length * 500);
+	
 		}
 		var successCallbackFuzzySearch = function(data) {
 			if(data.stores.length == 0) {
@@ -207,7 +244,8 @@
 			undoHighlightStore: undoHighlightStore,
 			setMaxResult: setMaxResult,
 			setRadius : setRadius,
-			loadCityList : loadCityList
+			loadCityList : loadCityList,
+			successCallbackDetailedSearch: successCallbackDetailedSearch
 			
 		};	
 	})();
@@ -284,6 +322,7 @@
 				dataType : 'json',
 				success : function(data) {
 					console.log(data);
+					JUMBO.successCallbackDetailedSearch(data);
 				}/*,
 				error : errorCallbackFuzzySearch*/
 			});

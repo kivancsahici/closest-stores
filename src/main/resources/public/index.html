@@ -61,40 +61,40 @@
 	<script id="city-list-template" type="text/x-lodash-template">		
 		<select class="custom-select custom-select-sm">
 			<option selected>Select city</option>
-			<% for(var i = 0; i < nearestStores.length; i += 1) { %>
-				<option><%-nearestStores[i]%></option>
+			<% for(var i = 0; i < stores.length; i += 1) { %>
+				<option><%-stores[i]%></option>
 			<% } %>
 		</select>	
 	</script>
 	<script id="store-list-template" type="text/x-lodash-template">
 	<div class="list-group">
-		<% for(var i = 0; i < nearestStores.length; i += 1) { %>
+		<% for(var i = 0; i < stores.length; i += 1) { %>
 		  <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
 			<div class="row">
 				<div class="col-7">
-				<div class="addressName"><%-nearestStores[i].addressName%></div>				      
+				<div class="addressName"><%-stores[i].addressName%></div>				      
 				</div>
 				<div class="col-4">
-				<%if (nearestStores[i].locationType == 'Supermarkt'){ %>
+				<%if (stores[i].locationType == 'Supermarkt'){ %>
 					<div class="bg-supermarket"></div>
 				<% } %>
-				<%if (nearestStores[i].locationType == 'SupermarktPuP'){ %>
+				<%if (stores[i].locationType == 'SupermarktPuP'){ %>
 					<div class="bg-combo_market"></div>
 				<% } %>
-				<%if (nearestStores[i].locationType == 'PuP'){ %>
+				<%if (stores[i].locationType == 'PuP'){ %>
 					<div class="bg-pup_supermarket"></div>
 				<% } %>
 				</div>
 			</div>
 			
-			<%if (nearestStores[i].storeStatus == 'open'){ %>
-				<small>Currently open, closes at <%-nearestStores[i].todayClose%></small>
+			<%if (stores[i].storeStatus == 'open'){ %>
+				<small>Currently open, closes at <%-stores[i].todayClose%></small>
 			<% } %>
-			<%if (nearestStores[i].storeStatus == 'closing_soon'){ %>
-				<small>Closing soon at <%-nearestStores[i].todayClose%></small>
+			<%if (stores[i].storeStatus == 'closing_soon'){ %>
+				<small>Closing soon at <%-stores[i].todayClose%></small>
 			<% } %>				    
-			<%if (nearestStores[i].storeStatus == 'closed'){ %>
-				<small>Currently closed, opens at <%-nearestStores[i].todayOpen%></small>
+			<%if (stores[i].storeStatus == 'closed'){ %>
+				<small>Currently closed, opens at <%-stores[i].todayOpen%></small>
 			<% } %>
 		  </a>
 		<% } %>

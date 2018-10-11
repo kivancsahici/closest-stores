@@ -9,5 +9,5 @@ public interface IStoreService {
 	List<Store> saveAll(List<Store> storeList);
 	List<String> findUniqueCities();
 	List<Store> findByCity(String city);
-	List<Store> findByCityAndStreet(String city, String street);
+	NearestStores findByCityAndStreet(String city, String street);
 }

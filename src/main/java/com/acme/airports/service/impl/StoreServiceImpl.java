@@ -3,6 +3,7 @@ package com.acme.airports.service.impl;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,8 +31,41 @@ public class StoreServiceImpl implements IStoreService{
 	}
 	
 	@Override
-	public List<Store> findByCityAndStreet(String city, String street) {
-		return storeRepository.findByCityAndStreetOrderByStreet(city, street);
+	public NearestStores findByCityAndStreet(String city, String street) {
+		//return storeRepository.findByCityAndStreetOrderByStreet(city, street);
+		List<Store> storeList = storeRepository.findByCityAndStreetOrderByStreet(city, street);
+		List<StoreResult> storeResultList = new ArrayList<StoreResult>();
+		
+		//TODO undo comment out
+		LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
+		//LocalTime now = LocalTime.parse("19:10");
+		
+		for(Store store : storeList) {
+			StoreResult storeResult = new StoreResult();
+			storeResult.setAddressName(store.getAddressName());
+			storeResult.setCity(store.getCity());
+			storeResult.setLatitude(store.getLatitude());
+			storeResult.setLongitude(store.getLongitude());
+			storeResult.setLocationType(store.getLocationType());
+			storeResult.setSapStoreID(store.getSapStoreID());
+			storeResult.setTodayOpen(store.getTodayOpen());
+			storeResult.setTodayClose(store.getTodayClose());
+			
+			LocalTime from = LocalTime.parse(storeResult.getTodayOpen());
+			LocalTime to = LocalTime.parse(storeResult.getTodayClose());
+			if(now.isAfter(from) && now.isBefore(to)) {
+				if(ChronoUnit.MINUTES.between(now, to) < 60)
+					storeResult.setStoreStatus(StoreStatus.CLOSING_SOON);
+				else
+					storeResult.setStoreStatus(StoreStatus.OPEN);
+			}
+			else
+				storeResult.setStoreStatus(StoreStatus.CLOSED);
+			storeResultList.add(storeResult);
+		}
+		NearestStores stores = new NearestStores();
+		stores.setNearestStores(storeResultList);
+		return stores;
 	}
 	
 	@Override

@@ -17,7 +17,8 @@ public class IStoreRepositoryCustomImpl implements IStoreRepositoryCustom {
 	public List<StoreResult> findNearestStores(Double latitude, Double longitude, Integer radius, Integer maxResult) {		
 		String baseQuery =   "SELECT * FROM (  "  + 
 				 "   SELECT sap_storeid, city, address_name,  "  + 
-				 "          latitude, longitude, distance, today_open, today_close, location_type  "  + 
+				 //"          latitude, longitude, distance, today_open, today_close, location_type  "  + 
+				 "          latitude, longitude, today_open, today_close, location_type  "  +
 				 "     FROM (  "  + 
 				 "    SELECT z.sap_storeid, z.city, z.address_name,  "  + 
 				 "           z.latitude, z.longitude, z.today_open, z.today_close, z.location_type, "  + 

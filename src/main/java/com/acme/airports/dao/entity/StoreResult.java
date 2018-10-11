@@ -15,7 +15,6 @@ public class StoreResult {
 	private String addressName;
 	private Double latitude;
 	private Double longitude;
-    private Double distance;
     private String todayOpen;
     private String todayClose;
     private String locationType;
@@ -52,12 +51,6 @@ public class StoreResult {
 	}
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
-	}
-	public Double getDistance() {
-		return distance;
-	}
-	public void setDistance(Double distance) {
-		this.distance = distance;
 	}
 	public StoreStatus getStoreStatus() {
 		return storeStatus;
