@@ -21,6 +21,7 @@
 		var longitude;
 		var radius = 25;
 		var maxResult = 5;
+		var detailedSearchOn = false;
 		var setRadius = function(paramRadius) {
 			radius = paramRadius;
 		}
@@ -94,25 +95,30 @@
 			    	}));
 		    }, timeout);
 		}
-		var successCallbackDetailedSearch = function(data) {
+		var successCallbackDetailedSearch = function(data, paramDetailedSearchOn) {
 			if(data.stores.length == 0) {
 				alert("sorry");
 				return false;
 			}
 			removeMarkers();
-			/*
-			markers.push(map.addMarker({
-		    	  lat: data.latitude,
-		    	  lng: data.longitude,
-		    	  infoWindow: {
-		    		content: '<p>You are here</p>'
-		    	  },
-		    	  draggable: false,
-		    	  icon: {
-				       url: "icon/blue_pin.png"
-				  }
-		    	}));
-		    */
+			
+			//it is location based search, not search by city / street
+			if(typeof paramDetailedSearchOn === 'undefined') {
+				markers.push(map.addMarker({
+			    	  lat: data.latitude,
+			    	  lng: data.longitude,
+			    	  infoWindow: {
+			    		content: '<p>You are here</p>'
+			    	  },
+			    	  draggable: false,
+			    	  icon: {
+					       url: "icon/blue_pin.png"
+					  }
+			    	}));
+			} else {
+				detailedSearchOn = paramDetailedSearchOn;
+			}
+			
 			for (var i = 0; i < data.stores.length; i++) {			    
 			    addMarkerWithTimeout(data.stores[i], 300 + (i * 500));
 			}
@@ -214,11 +220,17 @@
 		}
 		
 		var undoHighlightStore = function(index) {
-			markers[index].setIcon("icon/shopping-cart-1.png");
+			if(detailedSearchOn == false)
+				markers[++index].setIcon("icon/shopping-cart-1.png");
+			else
+				markers[index].setIcon("icon/shopping-cart-1.png");
 		}
 		
 		var highlightStore = function(index) {
-			markers[index].setIcon("icon/shopping-cart.png");
+			if(detailedSearchOn == false)
+				markers[++index].setIcon("icon/shopping-cart.png");
+			else
+				markers[index].setIcon("icon/shopping-cart.png");
 		}
 		
 		var loadCityList = function() {			
@@ -322,7 +334,7 @@
 				dataType : 'json',
 				success : function(data) {
 					console.log(data);
-					JUMBO.successCallbackDetailedSearch(data);
+					JUMBO.successCallbackDetailedSearch(data, true);
 				}/*,
 				error : errorCallbackFuzzySearch*/
 			});
@@ -341,13 +353,13 @@
 		$(".storeList").on('mouseleave', '.list-group a', function(e) {
 			e.preventDefault();
 			var storeIndex = $(".storeList > .list-group > a").index(this);
-			JUMBO.undoHighlightStore(storeIndex + 1);			
+			JUMBO.undoHighlightStore(storeIndex);			
 		});
 		
 		$(".storeList").on('mouseover', '.list-group a', function(e) {
 			e.preventDefault();
 			var storeIndex = $(".storeList > .list-group > a").index(this);
-			JUMBO.highlightStore(storeIndex + 1);
+			JUMBO.highlightStore(storeIndex);
 		});
 		JUMBO.initMap();
 	} );
