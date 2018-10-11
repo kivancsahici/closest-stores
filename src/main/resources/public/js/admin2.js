@@ -22,6 +22,9 @@
 		var radius = 25;
 		var maxResult = 5;
 		var detailedSearchOn = false;
+		var getMap = function() {
+			return map;
+		}
 		var setRadius = function(paramRadius) {
 			radius = paramRadius;
 		}
@@ -95,40 +98,31 @@
 			    	}));
 		    }, timeout);
 		}
-		var successCallbackDetailedSearch = function(data, paramDetailedSearchOn) {
+		var successCallbackDetailedSearch = function(data) {			
 			if(data.stores.length == 0) {
 				alert("sorry");
 				return false;
 			}
 			removeMarkers();
 			
-			//it is location based search, not search by city / street
-			if(typeof paramDetailedSearchOn === 'undefined') {
-				markers.push(map.addMarker({
-			    	  lat: data.latitude,
-			    	  lng: data.longitude,
-			    	  infoWindow: {
-			    		content: '<p>You are here</p>'
-			    	  },
-			    	  draggable: false,
-			    	  icon: {
-					       url: "icon/blue_pin.png"
-					  }
-			    	}));
-			} else {
-				detailedSearchOn = paramDetailedSearchOn;
-			}
+			detailedSearchOn = true;
 			
 			for (var i = 0; i < data.stores.length; i++) {			    
 			    addMarkerWithTimeout(data.stores[i], 300 + (i * 500));
 			}
 							    			
-			window.setTimeout(function() {				
-				var bounds = [];
-			    for (var i = 0; i < markers.length; i++) {			     			      
-			      bounds.push(new google.maps.LatLng(markers[i].internalPosition.lat(), markers[i].internalPosition.lng()));
-			    }
-			    map.fitLatLngBounds(bounds);			    
+			window.setTimeout(function() {
+				if(markers.length == 1)
+					map.setCenter(markers[0].internalPosition.lat(), markers[0].internalPosition.lng(),function() {
+						map.setZoom(18);
+					});					
+				else {
+					var bounds = [];
+				    for (var i = 0; i < markers.length; i++) {			     			      
+				      bounds.push(new google.maps.LatLng(markers[i].internalPosition.lat(), markers[i].internalPosition.lng()));
+				    }
+				    map.fitLatLngBounds(bounds);
+				}
 		    }, 300 + data.stores.length * 500);
 			
 			
@@ -137,12 +131,15 @@
 		    }, 300 + data.stores.length * 500);
 	
 		}
-		var successCallbackFuzzySearch = function(data) {
+		
+		var successCallbackGeoSearch = function(data) {		    
 			if(data.stores.length == 0) {
 				alert("sorry");
 				return false;
 			}
 			removeMarkers();
+			
+			detailedSearchOn = false;
 			markers.push(map.addMarker({
 		    	  lat: data.latitude,
 		    	  lng: data.longitude,
@@ -170,7 +167,6 @@
 			window.setTimeout(function() {				
 				JUMBO.renderNearestStores(data);			    
 		    }, 300 + data.stores.length * 500);
-	
 		}
 		
 		var errorCallbackFuzzySearch = function(jqXHR, textStatus) {
@@ -183,7 +179,7 @@
 				url: '/geoapi/v1/stores/by_geocoord.json',
 				data: {"latitude": latitude,"longitude": longitude, "radius": radius, "maxResult" : maxResult},
 				dataType : 'json',
-				success : successCallbackFuzzySearch,
+				success : successCallbackGeoSearch,
 				error : errorCallbackFuzzySearch
 			});
 		}
@@ -257,7 +253,8 @@
 			setMaxResult: setMaxResult,
 			setRadius : setRadius,
 			loadCityList : loadCityList,
-			successCallbackDetailedSearch: successCallbackDetailedSearch
+			successCallbackDetailedSearch: successCallbackDetailedSearch,
+			getMap: getMap
 			
 		};	
 	})();
@@ -290,10 +287,12 @@
 		});
 		
 		$(".citySelectionList").on('change', '.custom-select', function(e) {
-			//alert($(e.target).val());
+			//disable search button and wait for street selection to enable it back
+			$("#v-pills-profile .detailedSearch").prop('disabled', true);
+			
 			var index = $(".citySelectionList .custom-select").prop('selectedIndex');
 			if(index == 0) {
-				$("#v-pills-profile .detailedSearch").prop('disabled', true);
+				//$("#v-pills-profile .detailedSearch").prop('disabled', true);
 				var temp = "<option selected>Select street</option>";
 				$(".streetSelectionList select").html(temp);
 				return false;
@@ -332,10 +331,12 @@
 					"street": street
 				},
 				dataType : 'json',
+				success: JUMBO.successCallbackDetailedSearch
+				/*
 				success : function(data) {
 					console.log(data);
-					JUMBO.successCallbackDetailedSearch(data, true);
-				}/*,
+					JUMBO.successCallbackSearch(data, true);
+				}*//*,
 				error : errorCallbackFuzzySearch*/
 			});
 		});
