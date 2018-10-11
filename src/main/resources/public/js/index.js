@@ -17,12 +17,14 @@
 		var markers = [];
 		var DEFAULT_LATITUDE = 52.040853;
 		var DEFAULT_LONGITUDE = 5.315468;
-		var latitude;
-		var longitude;
+		var latitude = DEFAULT_LATITUDE;
+		var longitude = DEFAULT_LONGITUDE;
 		var radius = 25;
 		var maxResult = 5;
 		var detailedSearchOn = false;
 		var showOpen = false; //applicable for geo search only
+		var storeListTemplate = $("#store-list-template").html();
+		var citySelectionListTemplate = $("#city-list-template").html();
 		
 		var setShowOpen = function(param) {
 			showOpen = param;
@@ -45,7 +47,6 @@
 		}
 		
 		var renderNearestStores = function (data) {
-			  var storeListTemplate = document.getElementById("store-list-template").innerHTML;
 			  //create template function
 			  var templateFn = _.template(storeListTemplate);
 			  //execute template function with JSON object for the interpolated values			  
@@ -55,41 +56,36 @@
 		
 		//private function
 		var renderCitySelectionList = function (data) {
-			  var citySelectionListTemplate = $("#city-list-template").html();
 			  //create template function
 			  var templateFn = _.template(citySelectionListTemplate);
 			  //execute template function with JSON object for the interpolated values			  
 			  var templateHTML = templateFn({"stores": data});			  
 			  $(".citySelectionList").html(templateHTML);
 		}
-		var initMap = function(latitude, longitude) {			
-			latitude = latitude || DEFAULT_LATITUDE;
-			longitude = longitude || DEFAULT_LONGITUDE;
-
-			var mapholder = document.getElementById('mapholder')
-		    mapholder.style.height = '458px';
-		    mapholder.style.width = '420px';    
-		    
-		    map = new GMaps({
-		    	  el: '#mapholder',
-		    	  zoom: 10,
-		    	  lat: latitude,
-		    	  lng: longitude,
-		    	  disableDefaultUI: true
-		    });		    		    
-		    
-		    map.setContextMenu({
-	    	  control: 'map',
-	    	  options: [{
-	    	    title: 'Find stores around here',
-	    	    name: 'add_marker',
-	    	    action: function(e) {		    	    
-	    	    	JUMBO.searchNearestStores(e.latLng.lat(), e.latLng.lng());
-	    	    }
-	    	  }]
-	    	});
-		    
-		    //searchNearestStores(latitude, longitude);
+		var initMap = function() {
+			if(typeof map === "undefined") {//to avoid re-init
+			    $("#mapholder").height(458);
+			    $("#mapholder").width(420);
+			    
+			    map = new GMaps({
+			    	  el: '#mapholder',
+			    	  zoom: 10,
+			    	  lat: latitude,
+			    	  lng: longitude,
+			    	  disableDefaultUI: true
+			    });		    		    
+			    
+			    map.setContextMenu({
+		    	  control: 'map',
+		    	  options: [{
+		    	    title: 'Find stores around here',
+		    	    name: 'add_marker',
+		    	    action: function(e) {		    	    
+		    	    	JUMBO.searchNearestStores(e.latLng.lat(), e.latLng.lng());
+		    	    }
+		    	  }]
+		    	});
+			}
 		}
 		
 		var addMarkerWithTimeout = function(data, timeout) {			
@@ -105,7 +101,7 @@
 		}
 		var successCallbackDetailedSearch = function(data) {			
 			if(data.stores.length == 0) {
-				alert("sorry");
+				$('.modal').modal();
 				return false;
 			}
 			removeMarkers();
@@ -139,7 +135,7 @@
 		
 		var successCallbackGeoSearch = function(data) {		    
 			if(data.stores.length == 0) {
-				alert("sorry");
+				$('.modal').modal();
 				return false;
 			}
 			removeMarkers();
@@ -174,50 +170,54 @@
 		    }, 300 + data.stores.length * 500);
 		}
 		
-		var errorCallbackFuzzySearch = function(jqXHR, textStatus) {
+		var errorCallback = function(jqXHR, textStatus) {
 			console.log(jqXHR, textStatus);
 		}
 		
-		var searchNearestStores = function(latitude, longitude) {			
+		var searchNearestStores = function(paramLatitude, paramLongitude) {			
+			var lat = paramLatitude || latitude;
+			var lon = paramLongitude || longitude;
 			$.ajax({
 				type : 'GET',
 				url: '/geoapi/v1/stores/by_geocoord.json',
-				data: {"latitude": latitude,"longitude": longitude, "radius": radius, "maxResult" : maxResult, "showOpen" : showOpen},
+				data: {"latitude": lat,"longitude": lon, "radius": radius, "maxResult" : maxResult, "showOpen" : showOpen},
 				dataType : 'json',
 				success : successCallbackGeoSearch,
-				error : errorCallbackFuzzySearch
+				error : errorCallback
 			});
 		}
 		
 		var showPosition = function(position)  {
-			//TODO replace with below
-		    searchNearestStores(52.040853, 5.315468);
-		    //searchNearestStores(position.coords.latitude, position.coords.longitude);
+			latitude = position.coords.latitude;
+			longitude = position.coords.longitude;
+		    initMap();
 		}
 		
 		var getLocation = function() {
 		    if (navigator.geolocation) {
 		        navigator.geolocation.getCurrentPosition(showPosition, showError);
 		    } else { 
-		        x.innerHTML = "Geolocation is not supported by this browser.";
+		        //Geolocation is not supported by this browser
+		    	initMap();
 		    }
 		}
 
 		var showError = function(error) {
 		    switch(error.code) {
 		        case error.PERMISSION_DENIED:
-		            x.innerHTML = "User denied the request for Geolocation."
+		            console.log("User denied the request for Geolocation.");
 		            break;
 		        case error.POSITION_UNAVAILABLE:
-		            x.innerHTML = "Location information is unavailable."
+		        	console.log("Location information is unavailable.");
 		            break;
 		        case error.TIMEOUT:
-		            x.innerHTML = "The request to get user location timed out."
+		        	console.log("The request to get user location timed out.");
 		            break;
 		        case error.UNKNOWN_ERROR:
-		            x.innerHTML = "An unknown error occurred."
+		        	console.log("An unknown error occurred.");
 		            break;
 		    }
+		    initMap();
 		}
 		
 		var undoHighlightStore = function(index) {
@@ -242,7 +242,7 @@
 				success : function(data) {
 					renderCitySelectionList(data)
 				},
-				error : errorCallbackFuzzySearch
+				error : errorCallback
 			});
 		}
  		
@@ -298,7 +298,6 @@
 			
 			var index = $(".citySelectionList .custom-select").prop('selectedIndex');
 			if(index == 0) {
-				//$("#v-pills-profile .detailedSearch").prop('disabled', true);
 				var temp = "<option selected>Select street</option>";
 				$(".streetSelectionList select").html(temp);
 				return false;
@@ -315,8 +314,8 @@
 						}
 						$(".streetSelectionList select").html(temp);
 					}
-				}/*,
-				error : errorCallbackFuzzySearch*/
+				},
+				error : JUMBO.errorCallback
 			});
 		});
 		
@@ -330,7 +329,7 @@
 		
 		$(".btn.findStores").on("click", function(e) {			
 			e.preventDefault();
-			JUMBO.getLocation();
+			JUMBO.searchNearestStores();
 		 });
 		
 		$(".btn.detailedSearch").on("click", function(e){
@@ -345,13 +344,8 @@
 					"street": street
 				},
 				dataType : 'json',
-				success: JUMBO.successCallbackDetailedSearch
-				/*
-				success : function(data) {
-					console.log(data);
-					JUMBO.successCallbackSearch(data, true);
-				}*//*,
-				error : errorCallbackFuzzySearch*/
+				success: JUMBO.successCallbackDetailedSearch,
+				error : JUMBO.errorCallback
 			});
 		});
 		$(".needs-validation").on("keypress", function(e) {		 
@@ -360,7 +354,6 @@
 		        var latitude = $("#formInputLatitude").val();
 		        var longitude = $("#formInputLongitude").val();
 		        JUMBO.searchNearestStores(latitude, longitude);
-		        //$(".needs-validation input").toggleClass("is-invalid", true);
 		        return false;
 		     }
 		 });
@@ -376,5 +369,5 @@
 			var storeIndex = $(".storeList > .list-group > a").index(this);
 			JUMBO.highlightStore(storeIndex);
 		});
-		JUMBO.initMap();
+		JUMBO.getLocation();
 	} );

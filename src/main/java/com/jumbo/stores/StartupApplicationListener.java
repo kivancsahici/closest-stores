@@ -6,7 +6,9 @@ import java.io.InputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -20,6 +22,9 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
 
 	@Autowired
 	private IStoreService storeService;
+	
+	@Autowired
+	private ConfigurableApplicationContext ctx;
  
     @Override public void onApplicationEvent(ContextRefreshedEvent event) {                
         ObjectMapper mapper = new ObjectMapper();		
@@ -31,6 +36,7 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
 			logger.info("Initial data was successfully persisted");
 		} catch (IOException e){			
 			logger.error(String.format("Unable to save users: %s", e.getMessage()));
+			SpringApplication.exit(ctx, () -> 1);
 		}
     }
 }
