@@ -30,7 +30,7 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
 			storeService.saveAll(storeList.getStores());
 			logger.info("Initial data was successfully persisted");
 		} catch (IOException e){
-			System.out.println("Unable to save users: " + e.getMessage());
+			logger.error("Unable to save users: " + e.getMessage());
 		}
     }
 }

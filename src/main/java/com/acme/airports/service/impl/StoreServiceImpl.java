@@ -32,9 +32,8 @@ public class StoreServiceImpl implements IStoreService{
 	
 	@Override
 	public NearestStores findByCityAndStreet(String city, String street) {
-		//return storeRepository.findByCityAndStreetOrderByStreet(city, street);
 		List<Store> storeList = storeRepository.findByCityAndStreetOrderByStreet(city, street);
-		List<StoreResult> storeResultList = new ArrayList<StoreResult>();
+		List<StoreResult> storeResultList = new ArrayList<>();
 		
 		//TODO undo comment out
 		LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
@@ -89,7 +88,7 @@ public class StoreServiceImpl implements IStoreService{
 			else
 				result.setStoreStatus(StoreStatus.CLOSED);
 		}
-		if(showOpen == true)
+		if(showOpen)
 			storeList.removeIf(s -> s.getStoreStatus().equals(StoreStatus.CLOSED));
 		
 		NearestStores nearestStores = new NearestStores();
