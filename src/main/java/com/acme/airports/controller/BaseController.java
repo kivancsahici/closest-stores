@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.xml.transform.TransformerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,20 +32,19 @@ public class BaseController {
 			@RequestParam(value = "radius",  defaultValue = "25") final Integer radius,
 			@RequestParam(value = "maxResult", defaultValue = "5") final Integer maxResult,
 			@RequestParam(value = "showOpen", required = false) final Boolean showOpen
-			) throws TransformerException {		
-			return storeService.findNearestStores(latitude, longitude, radius, maxResult, showOpen);
+			){		
+		return storeService.findNearestStores(latitude, longitude, radius, maxResult, showOpen);
 	}
 	
 	@GetMapping(value = "/cities")
-	public List<String> getUniqueCities() throws TransformerException {		
+	public List<String> getUniqueCities() {		
 		return storeService.findUniqueCities();
 	}
 	
 	@JsonView(Views.Lazy.class)
 	@GetMapping(value = "/cities/{city}")
 	public List<Store> getCity(
-			@PathVariable("city") String cityName
-			) throws TransformerException {		
+			@PathVariable("city") String cityName) {		
 		return storeService.findByCity(cityName);
 	}
 	
@@ -54,7 +52,7 @@ public class BaseController {
 	public NearestStores getStoresByCityandStreet(
 			@RequestParam("city") String cityName,
 			@RequestParam("street") String streetName
-			) throws TransformerException {		
+			) {		
 		return storeService.findByCityAndStreet(cityName, streetName);
 	}
 }
