@@ -6,9 +6,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.xml.transform.TransformerException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.acme.airports.dao.entity.Store;
@@ -25,8 +25,8 @@ public class BaseController {
 	/** The entity manager. */
 	@PersistenceContext
 	private EntityManager entityManager;	
-
-	@RequestMapping(value = "/stores/by_geocoord.json", method = RequestMethod.GET)
+	
+	@GetMapping(value = "/stores/by_geocoord.json")
 	public NearestStores getNearestStores(
 			@RequestParam("latitude") final Double latitude,
 			@RequestParam("longitude") final Double longitude,	
@@ -37,20 +37,20 @@ public class BaseController {
 			return storeService.findNearestStores(latitude, longitude, radius, maxResult, showOpen);
 	}
 	
-	@RequestMapping(value = "/cities", method = RequestMethod.GET)
+	@GetMapping(value = "/cities")
 	public List<String> getUniqueCities() throws TransformerException {		
 		return storeService.findUniqueCities();
 	}
 	
 	@JsonView(Views.Lazy.class)
-	@RequestMapping(value = "/cities/{city}", method = RequestMethod.GET)
+	@GetMapping(value = "/cities/{city}")
 	public List<Store> getCity(
 			@PathVariable("city") String cityName
 			) throws TransformerException {		
 		return storeService.findByCity(cityName);
 	}
 	
-	@RequestMapping(value = "/stores/search.json", method = RequestMethod.GET)
+	@GetMapping(value = "/stores/search.json")
 	public NearestStores getStoresByCityandStreet(
 			@RequestParam("city") String cityName,
 			@RequestParam("street") String streetName
