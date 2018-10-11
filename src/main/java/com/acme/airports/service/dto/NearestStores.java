@@ -5,14 +5,14 @@ import java.util.List;
 import com.acme.airports.dao.entity.StoreResult;
 
 public class NearestStores {
-	private List<StoreResult> nearestStores;
+	private List<StoreResult> stores;
 	private Double latitude;
 	private Double longitude;
-	public List<StoreResult> getNearestStores() {
-		return nearestStores;
+	public List<StoreResult> getStores() {
+		return stores;
 	}
 	public void setNearestStores(List<StoreResult> nearestStores) {
-		this.nearestStores = nearestStores;
+		this.stores = nearestStores;
 	}
 	public Double getLatitude() {
 		return latitude;

@@ -95,7 +95,7 @@
 		    }, timeout);
 		}
 		var successCallbackFuzzySearch = function(data) {
-			if(data.nearestStores.length == 0) {
+			if(data.stores.length == 0) {
 				alert("sorry");
 				return false;
 			}
@@ -111,8 +111,8 @@
 				       url: "icon/blue_pin.png"
 				  }
 		    	}));
-			for (var i = 0; i < data.nearestStores.length; i++) {			    
-			    addMarkerWithTimeout(data.nearestStores[i], 300 + (i * 500));
+			for (var i = 0; i < data.stores.length; i++) {			    
+			    addMarkerWithTimeout(data.stores[i], 300 + (i * 500));
 			}
 							    			
 			window.setTimeout(function() {				
@@ -121,12 +121,12 @@
 			      bounds.push(new google.maps.LatLng(markers[i].internalPosition.lat(), markers[i].internalPosition.lng()));
 			    }
 			    map.fitLatLngBounds(bounds);			    
-		    }, 300 + data.nearestStores.length * 500);
+		    }, 300 + data.stores.length * 500);
 			
 			
 			window.setTimeout(function() {				
 				JUMBO.renderNearestStores(data);			    
-		    }, 300 + data.nearestStores.length * 500);
+		    }, 300 + data.stores.length * 500);
 	
 		}
 		
@@ -136,8 +136,7 @@
 		
 		var searchNearestStores = function(latitude, longitude) {			
 			$.ajax({
-				type : 'GET',				
-				//url: '/jumbo/nearestStores',
+				type : 'GET',
 				url: '/geoapi/v1/stores/by_geocoord.json',
 				data: {"latitude": latitude,"longitude": longitude, "radius": radius, "maxResult" : maxResult},
 				dataType : 'json',
@@ -189,7 +188,6 @@
 			$.ajax({
 				type : 'GET',				
 				url: '/geoapi/v1/cities',
-				//data: {"latitude": latitude,"longitude": longitude, "radius": radius, "maxResult" : maxResult},
 				dataType : 'json',
 				success : function(data) {
 					renderCitySelectionList(data)
@@ -283,7 +281,6 @@
 					"city": city,
 					"street": street
 				},
-				//url: '/jumbo/cities/' + city + "/streets/" + street,
 				dataType : 'json',
 				success : function(data) {
 					console.log(data);
