@@ -2,6 +2,7 @@ package com.jumbo.stores.test.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.hamcrest.Matchers.*;
 /*
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.greaterThan;
@@ -26,14 +27,8 @@ public class StoreRepositoryIntegrationTest {
     @Autowired
     private IStoreRepository storeRepo;
  
-    // write test cases here
     @Test
-    public void findNearestStores() {
-    	/*
-    	List<Store> retval = storeRepo.findByCityOrderByStreet("Alkmaar");
-    	for(Store store : retval) {
-    		System.out.println(store.getAddressName());
-    	}*/
+    public void findNearestStores() {    	
     	List<StoreResult> storeResult = storeRepo.findNearestStores(52.075854, 4.234678, 25, 5);    	
         assertThat(storeResult, hasSize(5));
         
@@ -42,5 +37,19 @@ public class StoreRepositoryIntegrationTest {
         
         storeResult = storeRepo.findNearestStores(51.823928, 6.735862,  25, 5);
         assertThat(storeResult, hasSize(4));
+    }
+    
+    @Test
+    public void findByCityOrderByStreet() {
+    	List<Store> storeList = storeRepo.findByCityOrderByStreet("Alkmaar");
+    	assertThat(storeList, hasSize(3));
+    	assertThat(storeList.get(2).getStreet(), is("Winkelwaard"));
+    }
+    
+    @Test
+    public void findByCityAndStreetOrderByStreet() {
+    	List<Store> storeList = storeRepo.findByCityAndStreetOrderByStreet("Eindhoven", "Boutenslaan");
+    	assertThat(storeList, hasSize(1));
+    	assertThat(storeList.get(0).getSapStoreID(), is(4943));
     }
 }
