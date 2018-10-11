@@ -34,7 +34,7 @@ public class StoreControllerIntegrationTest {
     }
     
     @Test
-    public void findCities()
+    public void getCities()
       throws Exception{
     	mvc.perform(get("/geoapi/v1/cities")
     	.contentType(MediaType.APPLICATION_JSON))
@@ -42,5 +42,33 @@ public class StoreControllerIntegrationTest {
     	.andExpect(jsonPath("$").isArray())
     	.andExpect(jsonPath("$").isNotEmpty())
     	.andExpect(jsonPath("$", hasSize(375)));
+    }
+    
+    @Test
+    public void getCity()
+      throws Exception{
+    	mvc.perform(get("/geoapi/v1/cities/Amsterdam")
+    	.contentType(MediaType.APPLICATION_JSON))
+    	.andExpect(status().isOk())
+    	.andExpect(jsonPath("$").isArray())
+    	.andExpect(jsonPath("$").isNotEmpty())
+    	.andExpect(jsonPath("$..street", hasSize(14)))
+    	.andExpect(jsonPath("$[0].street", is("Baarsjesweg")))
+    	.andExpect(jsonPath("$[6].street", is("Oostelijke Handelskade")))
+    	;
+    }
+    
+    
+    @Test
+    public void getStoresByCityandStreet()
+      throws Exception{
+    	mvc.perform(get("/geoapi/v1/stores/search.json?city=Alkmaar&street=Paardenmarkt")
+    	.contentType(MediaType.APPLICATION_JSON))
+    	.andExpect(status().isOk())
+    	.andExpect(jsonPath("$.stores").isArray())
+    	.andExpect(jsonPath("$.stores").isNotEmpty())
+    	.andExpect(jsonPath("$.stores", hasSize(1)))
+    	.andExpect(jsonPath("$.stores[0].addressName", is("Jumbo Alkmaar Paardenmarkt")))
+    	;
     }
 }
