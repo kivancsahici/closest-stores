@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,9 +46,17 @@ public class BaseController {
 	
 	@JsonView(Views.Lazy.class)
 	@GetMapping(value = "/cities/{city}")
-	public List<Store> getCity(
-			@PathVariable("city") String cityName) {		
-		return storeService.findByCity(cityName);
+	public ResponseEntity<?> getCity(
+			@PathVariable("city") String cityName) {
+		List<Store> retval = storeService.findByCity(cityName);
+		if(retval.size() == 0) {
+			return ResponseEntity.notFound().build();
+		}
+		else {
+			return ResponseEntity.ok()
+			        .contentType(MediaType.APPLICATION_JSON)
+			        .body(retval);	 
+		}
 	}
 	
 	@GetMapping(value = "/stores/search.json")

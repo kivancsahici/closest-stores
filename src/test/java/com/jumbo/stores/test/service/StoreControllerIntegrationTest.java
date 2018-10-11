@@ -58,6 +58,14 @@ public class StoreControllerIntegrationTest {
     	;
     }
     
+    @Test
+    public void getNonExistingCity()
+      throws Exception{
+    	mvc.perform(get("/geoapi/v1/cities/London")
+    	.contentType(MediaType.APPLICATION_JSON))
+    	.andExpect(status().isNotFound())
+    	;
+    }
     
     @Test
     public void getStoresByCityandStreet()
