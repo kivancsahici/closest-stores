@@ -1,4 +1,4 @@
-package com.acme.airports.test.service;
+package com.jumbo.stores.test.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -16,9 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.acme.airports.dao.entity.Store;
-import com.acme.airports.dao.entity.StoreResult;
-import com.acme.airports.dao.repository.IStoreRepository;
+import com.jumbo.stores.dao.entity.Store;
+import com.jumbo.stores.dao.entity.StoreResult;
+import com.jumbo.stores.dao.repository.IStoreRepository;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest

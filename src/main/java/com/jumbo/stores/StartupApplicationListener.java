@@ -1,4 +1,4 @@
-package com.acme.airports;
+package com.jumbo.stores;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,8 +11,8 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.acme.airports.service.IStoreService;
-import com.acme.airports.service.dto.InputData;
+import com.jumbo.stores.service.IStoreService;
+import com.jumbo.stores.service.dto.InputData;
 
 @Component
 public class StartupApplicationListener implements ApplicationListener<ContextRefreshedEvent> {    

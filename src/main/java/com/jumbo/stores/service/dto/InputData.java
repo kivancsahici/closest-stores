@@ -1,9 +1,9 @@
-package com.acme.airports.service.dto;
+package com.jumbo.stores.service.dto;
 
 import java.util.List;
 
-import com.acme.airports.dao.entity.Store;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.jumbo.stores.dao.entity.Store;
 
 
 /**

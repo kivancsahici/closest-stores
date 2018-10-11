@@ -1,4 +1,4 @@
-package com.acme.airports.service.impl;
+package com.jumbo.stores.service.impl;
 
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.acme.airports.dao.entity.Store;
-import com.acme.airports.dao.entity.StoreResult;
-import com.acme.airports.dao.entity.StoreStatus;
-import com.acme.airports.dao.repository.IStoreRepository;
-import com.acme.airports.service.IStoreService;
-import com.acme.airports.service.dto.NearestStores;
+
+import com.jumbo.stores.dao.entity.Store;
+import com.jumbo.stores.dao.entity.StoreResult;
+import com.jumbo.stores.dao.entity.StoreStatus;
+import com.jumbo.stores.dao.repository.IStoreRepository;
+import com.jumbo.stores.service.IStoreService;
+import com.jumbo.stores.service.dto.NearestStores;
 
 @Service
 public class StoreServiceImpl implements IStoreService{

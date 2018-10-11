@@ -1,10 +1,11 @@
-package com.acme.airports.dao.repository;
+package com.jumbo.stores.dao.repository;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import com.acme.airports.dao.entity.Store;
+
+import com.jumbo.stores.dao.entity.Store;
 
 @Repository
 public interface IStoreRepository extends JpaRepository<Store, Integer>, IStoreRepositoryCustom{

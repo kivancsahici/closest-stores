@@ -1,12 +1,13 @@
-package com.acme.airports.dao.repository.impl;
+package com.jumbo.stores.dao.repository.impl;
 
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.transaction.annotation.Transactional;
-import com.acme.airports.dao.entity.StoreResult;
-import com.acme.airports.dao.repository.IStoreRepositoryCustom;
+
+import com.jumbo.stores.dao.entity.StoreResult;
+import com.jumbo.stores.dao.repository.IStoreRepositoryCustom;
 
 public class IStoreRepositoryCustomImpl implements IStoreRepositoryCustom {
 	@PersistenceContext

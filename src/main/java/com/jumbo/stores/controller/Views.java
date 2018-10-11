@@ -1,4 +1,4 @@
-package com.acme.airports.controller;
+package com.jumbo.stores.controller;
 
 public class Views {
 	private Views() {

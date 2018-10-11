@@ -1,13 +1,13 @@
-package com.acme.airports.dao.entity;
+package com.jumbo.stores.dao.entity;
 
 import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.acme.airports.controller.Views;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
+import com.jumbo.stores.controller.Views;
 
 @Entity
 @JsonIgnoreProperties(ignoreUnknown=true)

@@ -1,4 +1,4 @@
-package com.acme.airports.controller;
+package com.jumbo.stores.controller;
 
 import java.util.List;
 
@@ -10,10 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.acme.airports.dao.entity.Store;
-import com.acme.airports.service.IStoreService;
-import com.acme.airports.service.dto.NearestStores;
+
 import com.fasterxml.jackson.annotation.JsonView;
+import com.jumbo.stores.dao.entity.Store;
+import com.jumbo.stores.service.IStoreService;
+import com.jumbo.stores.service.dto.NearestStores;
 
 @RestController
 @RequestMapping("/geoapi/v1")

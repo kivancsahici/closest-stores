@@ -1,8 +1,8 @@
-package com.acme.airports.service.dto;
+package com.jumbo.stores.service.dto;
 
 import java.util.List;
 
-import com.acme.airports.dao.entity.StoreResult;
+import com.jumbo.stores.dao.entity.StoreResult;
 
 public class NearestStores {
 	private List<StoreResult> stores;

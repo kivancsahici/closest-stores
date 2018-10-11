@@ -1,8 +1,9 @@
-package com.acme.airports.service;
+package com.jumbo.stores.service;
 
 import java.util.List;
-import com.acme.airports.dao.entity.Store;
-import com.acme.airports.service.dto.NearestStores;
+
+import com.jumbo.stores.dao.entity.Store;
+import com.jumbo.stores.service.dto.NearestStores;
 
 public interface IStoreService {
 	NearestStores findNearestStores(Double latitude, Double longitude, Integer radius, Integer maxResult, Boolean showOpen);
