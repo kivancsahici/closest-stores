@@ -35,9 +35,7 @@ public class StoreServiceImpl implements IStoreService{
 		List<Store> storeList = storeRepository.findByCityAndStreetOrderByStreet(city, street);
 		List<StoreResult> storeResultList = new ArrayList<>();
 		
-		//TODO undo comment out
 		LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
-		//LocalTime now = LocalTime.parse("19:10");
 		
 		for(Store store : storeList) {
 			StoreResult storeResult = new StoreResult();
