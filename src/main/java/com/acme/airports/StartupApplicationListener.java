@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.acme.airports.service.IStoreService;
-import com.acme.airports.service.dto.Stores;
+import com.acme.airports.service.dto.InputData;
 
 @Component
 public class StartupApplicationListener implements ApplicationListener<ContextRefreshedEvent> {    
@@ -23,10 +23,10 @@ public class StartupApplicationListener implements ApplicationListener<ContextRe
  
     @Override public void onApplicationEvent(ContextRefreshedEvent event) {                
         ObjectMapper mapper = new ObjectMapper();		
-		TypeReference<Stores> typeReference = new TypeReference<Stores>(){};
+		TypeReference<InputData> typeReference = new TypeReference<InputData>(){};
 		InputStream inputStream = TypeReference.class.getResourceAsStream("/json/stores.json");
 		try {
-			Stores storeList = mapper.readValue(inputStream,typeReference);
+			InputData storeList = mapper.readValue(inputStream,typeReference);
 			storeService.saveAll(storeList.getStores());
 			logger.info("Initial data was successfully persisted");
 		} catch (IOException e){			

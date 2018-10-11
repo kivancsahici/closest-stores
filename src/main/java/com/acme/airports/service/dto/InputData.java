@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * 
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class Stores {
+public class InputData {
 	public List<Store> getStores() {
 		return stores;
 	}
