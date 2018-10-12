@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.jumbo.stores.dao.entity.Store;
 import com.jumbo.stores.service.IStoreService;
-import com.jumbo.stores.service.dto.NearestStores;
 
 @RestController
 @RequestMapping("/geoapi/v1")
@@ -29,19 +28,23 @@ public class BaseController {
 	private EntityManager entityManager;	
 	
 	@GetMapping(value = "/stores/by_geocoord.json")
-	public NearestStores getNearestStores(
+	public ResponseEntity<?> getNearestStores(
 			@RequestParam("latitude") final Double latitude,
 			@RequestParam("longitude") final Double longitude,	
 			@RequestParam(value = "radius",  defaultValue = "25") final Integer radius,
 			@RequestParam(value = "maxResult", defaultValue = "5") final Integer maxResult,
 			@RequestParam(value = "showOpen", required = false) final Boolean showOpen
 			){		
-		return storeService.findNearestStores(latitude, longitude, radius, maxResult, showOpen);
+		return ResponseEntity.ok()
+		        .contentType(MediaType.APPLICATION_JSON)
+		        .body(storeService.findNearestStores(latitude, longitude, radius, maxResult, showOpen));
 	}
 	
 	@GetMapping(value = "/cities")
-	public List<String> getUniqueCities() {		
-		return storeService.findUniqueCities();
+	public ResponseEntity<?> getUniqueCities() {		
+		return ResponseEntity.ok()
+		        .contentType(MediaType.APPLICATION_JSON)
+		        .body(storeService.findUniqueCities());
 	}
 	
 	@JsonView(Views.Lazy.class)
@@ -49,7 +52,7 @@ public class BaseController {
 	public ResponseEntity<?> getCity(
 			@PathVariable("city") String cityName) {
 		List<Store> retval = storeService.findByCity(cityName);
-		if(retval.size() == 0) {
+		if(retval.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 		else {
@@ -60,10 +63,12 @@ public class BaseController {
 	}
 	
 	@GetMapping(value = "/stores/search.json")
-	public NearestStores getStoresByCityandStreet(
+	public ResponseEntity<?> getStoresByCityandStreet(
 			@RequestParam("city") String cityName,
 			@RequestParam("street") String streetName
-			) {		
-		return storeService.findByCityAndStreet(cityName, streetName);
+			) {				
+		return ResponseEntity.ok()
+		        .contentType(MediaType.APPLICATION_JSON)
+		        .body(storeService.findByCityAndStreet(cityName, streetName));
 	}
 }
