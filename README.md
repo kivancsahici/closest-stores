@@ -9,5 +9,3 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?key=closest-stores-key&metric=coverage&project=closest-stores-key)](https://sonarcloud.io/component_measures?id=closest-stores-key&metric=coverage)
 
 `mvn spring-boot:run` can be used to run the application from the command line.
-
-The application can also be directly accessed from [here](https://closest-stores.herokuapp.com)
