@@ -69,10 +69,8 @@ public class StoreServiceImpl implements IStoreService{
 	@Override
 	public NearestStores findNearestStores(Double latitude, Double longitude, Integer radius, Integer maxResult, Boolean showOpen) {		
 		List<StoreResult> storeList = storeRepository.findNearestStores(latitude, longitude, radius, maxResult);
-				
-		//TODO undo comment out
-		//LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
-		LocalTime now = LocalTime.parse("20:10");
+						
+		LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
 		
 		for(StoreResult result : storeList) {
 						
