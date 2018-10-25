@@ -22,7 +22,12 @@
 		var detailedSearchOn = false;		
 		var storeListTemplate = $("#store-list-template").html();
 		var citySelectionListTemplate = $("#city-list-template").html();
-				
+		
+		var init = function() {
+			JUMBO.DATASERVICE.subscribe(successCallbackGeoSearch);
+			JUMBO.DATASERVICE.subscribe(renderNearestStores);
+		}
+		
 		var removeMarkers = function(data) {
 			for(var i=0; i < markers.length; i++){
 		        // remove the marker
@@ -66,7 +71,7 @@
 		    	    title: 'Find stores around here',
 		    	    name: 'add_marker',
 		    	    action: function(e) {		    	    
-		    	    	JUMBO.searchNearestStores(e.latLng.lat(), e.latLng.lng());
+		    	    	JUMBO.DATASERVICE.searchNearestStores(e.latLng.lat(), e.latLng.lng());
 		    	    }
 		    	  }]
 		    	});
@@ -110,12 +115,10 @@
 				    map.fitLatLngBounds(bounds);
 				}
 		    }, 300 + data.stores.length * 500);
-			
-			
+						
 			window.setTimeout(function() {				
 				JUMBO.renderNearestStores(data);			    
-		    }, 300 + data.stores.length * 500);
-	
+		    }, 300 + data.stores.length * 500);			
 		}
 		
 		var successCallbackGeoSearch = function(data) {		    
@@ -147,31 +150,12 @@
 			      bounds.push(new google.maps.LatLng(markers[i].internalPosition.lat(), markers[i].internalPosition.lng()));
 			    }
 			    map.fitLatLngBounds(bounds);			    
-		    }, 300 + data.stores.length * 500);
-			
-			
-			window.setTimeout(function() {				
-				JUMBO.renderNearestStores(data);			    
-		    }, 300 + data.stores.length * 500);
+		    }, 300 + data.stores.length * 500);						
 		}
 		
 		var errorCallback = function(jqXHR, textStatus) {
 			console.log(jqXHR, textStatus);
-		}
-		
-		var searchNearestStores = function(paramLatitude, paramLongitude) {			
-			var lat = paramLatitude || latitude;
-			var lon = paramLongitude || longitude;
-			$.ajax({
-				type : 'GET',
-				url: '/geoapi/v1/stores/by_geocoord.json',
-				data: {"latitude": lat,"longitude": lon, "radius": JUMBO.CONFIG.getRadius(), "maxResult" : JUMBO.CONFIG.getMaxResult(), "showOpen" : JUMBO.CONFIG.getShowOpen()},
-				dataType : 'json',
-				success : successCallbackGeoSearch,
-				error : errorCallback
-			});
-		}
-		
+		}		
 		var showPosition = function(position)  {
 			latitude = position.coords.latitude;
 			longitude = position.coords.longitude;
@@ -234,14 +218,14 @@
 		//reveal public methods
 		return {
 			showError : showError,
-			getLocation : getLocation,
-			searchNearestStores : searchNearestStores,
+			getLocation : getLocation,			
 			renderNearestStores: renderNearestStores,
 			initMap : initMap,
 			highlightStore: highlightStore,
 			undoHighlightStore: undoHighlightStore,			
 			loadCityList : loadCityList,
-			successCallbackDetailedSearch: successCallbackDetailedSearch
+			successCallbackDetailedSearch: successCallbackDetailedSearch,
+			init : init
 		};	
 	})();
 	
@@ -278,9 +262,60 @@
 			getRadius : getRadius,
 			getMaxResult : getMaxResult
 		};
+	})();	
+	
+	JUMBO.DATASERVICE = (function() {
+		var changeListeners = [];
+
+		var subscribe = function(callbackFunction) {
+		  changeListeners.push(callbackFunction);
+		}
+
+		var publish = function(data) {
+		  changeListeners.forEach((changeListener) => { changeListener(data); });
+		}
+		
+		var errorCallback = function(jqXHR, textStatus) {
+			console.log(jqXHR, textStatus);
+		}
+		
+		var searchNearestStores = function(paramLatitude, paramLongitude) {			
+			var lat = paramLatitude || latitude;
+			var lon = paramLongitude || longitude;
+			$.ajax({
+				type : 'GET',
+				url: '/geoapi/v1/stores/by_geocoord.json',
+				data: {"latitude": lat,"longitude": lon, "radius": JUMBO.CONFIG.getRadius(), "maxResult" : JUMBO.CONFIG.getMaxResult(), "showOpen" : JUMBO.CONFIG.getShowOpen()},
+				dataType : 'json',
+				success : successCallbackGeoSearch,
+				error : errorCallback
+			});
+		}
+		
+		var successCallbackGeoSearch = function(data) {			
+			changeListeners.forEach((changeListener) => { changeListener(data); });
+		}
+		
+		var addPlace = function(data) {
+			setTimeout(function() {
+				publish(data);
+			}, 5000);
+			
+		}
+		//reveal public methods
+		return {
+			subscribe : subscribe,
+			publish : publish,
+			addPlace : addPlace,
+			searchNearestStores : searchNearestStores
+		};
+
 	})();
 	
-	$(document).ready(function() {
+	
+	$(document).ready(function() {		
+		JUMBO.init();
+		
 		JUMBO.loadCityList();		
 		
 		//render slider values
@@ -344,7 +379,7 @@
 		
 		$(".btn.findStores").on("click", function(e) {			
 			e.preventDefault();
-			JUMBO.searchNearestStores();
+			JUMBO.DATASERVICE.searchNearestStores();
 		 });
 		
 		$(".btn.detailedSearch").on("click", function(e){
@@ -368,7 +403,7 @@
 				e.preventDefault();	        
 		        var latitude = $("#formInputLatitude").val();
 		        var longitude = $("#formInputLongitude").val();
-		        JUMBO.searchNearestStores(latitude, longitude);
+		        JUMBO.DATASERVICE.searchNearestStores(latitude, longitude);
 		        return false;
 		     }
 		 });
