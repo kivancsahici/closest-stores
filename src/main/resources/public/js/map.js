@@ -1,18 +1,3 @@
-/*	
-	jQuery.fn.visible = function() {
-	    return this.css('visibility', 'visible');
-	};
-	
-	jQuery.fn.invisible = function() {
-	    return this.css('visibility', 'hidden');
-	};
-	
-	jQuery.fn.visibilityToggle = function() {
-	    return this.css('visibility', function(i, visibility) {
-	        return (visibility == 'visible') ? 'hidden' : 'visible';
-	    });
-	};	
-	*/
 	var JUMBO = (function() {
 		var map;
 		var markers = [];
@@ -119,10 +104,10 @@
 						url: "icon/blue_pin.png"
 					}
 				}));
-		  }
-		  else {
-		    detailedSearchOn = true;
-		  }        
+			}
+			else {
+				detailedSearchOn = true;
+			}        
 			for (var i = 0; i < data.stores.length; i++) {			    
 			    addMarkerWithTimeout(data.stores[i], 300 + (i * 500));
 			}
@@ -139,11 +124,9 @@
 				    }
 				    map.fitLatLngBounds(bounds);
 				}
-		  }, 300 + data.stores.length * 500);					
+			}, 300 + data.stores.length * 500);					
 		}
-		var errorCallback = function(jqXHR, textStatus) {
-			console.log(jqXHR, textStatus);
-		}		
+				
 		var showPosition = function(position)  {
 			latitude = position.coords.latitude;
 			longitude = position.coords.longitude;
@@ -199,7 +182,9 @@
 				success : function(data) {
 					renderCitySelectionList(data)
 				},
-				error : errorCallback
+				error : function(jqXHR, textStatus) {
+					console.log(jqXHR, textStatus);
+				}
 			});
 		}
  		
