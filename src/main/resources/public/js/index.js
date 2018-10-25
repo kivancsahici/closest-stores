@@ -10,7 +10,7 @@
 	    return this.css('visibility', function(i, visibility) {
 	        return (visibility == 'visible') ? 'hidden' : 'visible';
 	    });
-	};
+	};	
 	
 	var JUMBO = (function() {
 		var map;
@@ -18,23 +18,11 @@
 		var DEFAULT_LATITUDE = 52.040853;
 		var DEFAULT_LONGITUDE = 5.315468;
 		var latitude = DEFAULT_LATITUDE;
-		var longitude = DEFAULT_LONGITUDE;
-		var radius = 25;
-		var maxResult = 5;
-		var detailedSearchOn = false;
-		var showOpen = false; //applicable for geo search only
+		var longitude = DEFAULT_LONGITUDE;		
+		var detailedSearchOn = false;		
 		var storeListTemplate = $("#store-list-template").html();
 		var citySelectionListTemplate = $("#city-list-template").html();
-		
-		var setShowOpen = function(param) {
-			showOpen = param;
-		}		
-		var setRadius = function(paramRadius) {
-			radius = paramRadius;
-		}
-		var setMaxResult = function(paramMaxResult) {
-			maxResult = paramMaxResult;
-		}
+				
 		var removeMarkers = function(data) {
 			for(var i=0; i < markers.length; i++){
 		        // remove the marker
@@ -177,7 +165,7 @@
 			$.ajax({
 				type : 'GET',
 				url: '/geoapi/v1/stores/by_geocoord.json',
-				data: {"latitude": lat,"longitude": lon, "radius": radius, "maxResult" : maxResult, "showOpen" : showOpen},
+				data: {"latitude": lat,"longitude": lon, "radius": JUMBO.CONFIG.getRadius(), "maxResult" : JUMBO.CONFIG.getMaxResult(), "showOpen" : JUMBO.CONFIG.getShowOpen()},
 				dataType : 'json',
 				success : successCallbackGeoSearch,
 				error : errorCallback
@@ -251,13 +239,45 @@
 			renderNearestStores: renderNearestStores,
 			initMap : initMap,
 			highlightStore: highlightStore,
-			undoHighlightStore: undoHighlightStore,
-			setMaxResult: setMaxResult,
-			setRadius : setRadius,
+			undoHighlightStore: undoHighlightStore,			
 			loadCityList : loadCityList,
-			successCallbackDetailedSearch: successCallbackDetailedSearch,			
-			setShowOpen: setShowOpen
+			successCallbackDetailedSearch: successCallbackDetailedSearch
 		};	
+	})();
+	
+	JUMBO.CONFIG = (function() {
+		var showOpen = false; //applicable for geo search only
+		var radius = 25;
+		var maxResult = 5;
+		
+		var setShowOpen = function(param) {
+			showOpen = param;
+		}		
+		var setRadius = function(paramRadius) {
+			radius = paramRadius;
+		}
+		var setMaxResult = function(paramMaxResult) {
+			maxResult = paramMaxResult;
+		}		
+		var getShowOpen = function() {
+			return showOpen;
+		}		
+		var getRadius = function() {
+			return radius;
+		}
+		var getMaxResult = function() {
+			return maxResult;
+		}
+		
+		//reveal public methods
+		return {
+			setShowOpen : setShowOpen,
+			setRadius : setRadius,
+			setMaxResult : setMaxResult,
+			getShowOpen : getShowOpen,
+			getRadius : getRadius,
+			getMaxResult : getMaxResult
+		};
 	})();
 	
 	$(document).ready(function() {
@@ -270,13 +290,13 @@
 		$("#formControlRadius").on("input", function(e){
 			var value = $(this).val();
 			$("#formControlRadiusValue").html(value + " km");
-			JUMBO.setRadius(value);
+			JUMBO.CONFIG.setRadius(value);
 		});
 		
 		$("#formControlMaxResults").on("input", function(e){
 			var value = $(this).val();
 			$("#formControlMaxResultsValue").html(value);
-			JUMBO.setMaxResult(value);
+			JUMBO.CONFIG.setMaxResult(value);
 		});
 		
 		$(".streetSelectionList").on('change', '.custom-select', function(e) {
@@ -316,9 +336,9 @@
 		
 		$('#showOpenStores').change(function() {		       
 		    if (this.checked) {
-		        JUMBO.setShowOpen(true); 
+		        JUMBO.CONFIG.setShowOpen(true); 
 		    } else {
-		    	JUMBO.setShowOpen(false);
+		    	JUMBO.CONFIG.setShowOpen(false);
 		    }
 		});
 		
