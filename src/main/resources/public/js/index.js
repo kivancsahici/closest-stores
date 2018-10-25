@@ -63,8 +63,7 @@
 		});
 		
 		$(".btn.findStores").on("click", function(e) {			
-			e.preventDefault();
-			//JUMBO.DATASERVICE.searchNearestStores();
+			e.preventDefault();			
 			JUMBO.findNearestStores();
 		 });
 		
@@ -72,17 +71,8 @@
 			e.preventDefault();
 			var city = $(".citySelectionList .custom-select").val();
 			var street = $(".streetSelectionList .custom-select").val();
-			JUMBO.DATASERVICE.detailedSearch(city, street);			
-		});
-		$(".needs-validation").on("keypress", function(e) {		 
-			 if (e.keyCode == 13) {
-				e.preventDefault();	        
-		        var latitude = $("#formInputLatitude").val();
-		        var longitude = $("#formInputLongitude").val();
-		        JUMBO.DATASERVICE.searchNearestStores(latitude, longitude);
-		        return false;
-		     }
-		 });
+			JUMBO.detailedSearch(city, street);			
+		});		
 		
 		$(".storeList").on('mouseleave', '.list-group a', function(e) {
 			e.preventDefault();

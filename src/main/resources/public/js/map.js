@@ -1,3 +1,4 @@
+/*	
 	jQuery.fn.visible = function() {
 	    return this.css('visibility', 'visible');
 	};
@@ -11,7 +12,7 @@
 	        return (visibility == 'visible') ? 'hidden' : 'visible';
 	    });
 	};	
-	
+	*/
 	var JUMBO = (function() {
 		var map;
 		var markers = [];
@@ -30,6 +31,10 @@
 		
 		var findNearestStores = function() {
 			JUMBO.DATASERVICE.searchNearestStores(latitude, longitude);
+		}
+		
+		var detailedSearch = function(city, street) {
+			JUMBO.DATASERVICE.detailedSearch(city, street);
 		}
 		
 		var removeMarkers = function(data) {
@@ -208,6 +213,7 @@
 			undoHighlightStore: undoHighlightStore,			
 			loadCityList : loadCityList,			
 			init : init,
-			findNearestStores : findNearestStores
+			findNearestStores : findNearestStores,
+			detailedSearch : detailedSearch
 		};	
 	})();
