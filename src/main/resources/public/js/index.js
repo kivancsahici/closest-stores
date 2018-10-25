@@ -1,7 +1,6 @@
 	$(document).ready(function() {		
 		JUMBO.init();
-		
-		JUMBO.loadCityList();		
+		JUMBO.CSRENDERER.init();			
 		
 		//render slider values
 		$("#formControlRadiusValue").html($("#formControlRadius").val() + " km");
@@ -70,8 +69,8 @@
 		$(".btn.detailedSearch").on("click", function(e){
 			e.preventDefault();
 			var city = $(".citySelectionList .custom-select").val();
-			var street = $(".streetSelectionList .custom-select").val();
-			JUMBO.detailedSearch(city, street);			
+			var street = $(".streetSelectionList .custom-select").val();			
+			JUMBO.DATASERVICE.detailedSearch(city, street);
 		});		
 		
 		$(".storeList").on('mouseleave', '.list-group a', function(e) {

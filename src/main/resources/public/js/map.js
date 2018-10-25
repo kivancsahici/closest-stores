@@ -5,22 +5,15 @@
 		var DEFAULT_LONGITUDE = 5.315468;
 		var latitude = DEFAULT_LATITUDE;
 		var longitude = DEFAULT_LONGITUDE;		
-		var detailedSearchOn = false;		
-		var storeListTemplate = $("#store-list-template").html();
-		var citySelectionListTemplate = $("#city-list-template").html();
+		var detailedSearchOn = false;
 		
 		var init = function() {
 			JUMBO.DATASERVICE.subscribe(successCallbackSearch);
-			JUMBO.DATASERVICE.subscribe(renderNearestStores);
 		}
 		
 		var findNearestStores = function() {
 			JUMBO.DATASERVICE.searchNearestStores(latitude, longitude);
-		}
-		
-		var detailedSearch = function(city, street) {
-			JUMBO.DATASERVICE.detailedSearch(city, street);
-		}
+		}		
 		
 		var removeMarkers = function(data) {
 			for(var i=0; i < markers.length; i++){
@@ -30,22 +23,6 @@
 			markers = [];
 		}
 		
-		var renderNearestStores = function (data) {
-			  //create template function
-			  var templateFn = _.template(storeListTemplate);
-			  //execute template function with JSON object for the interpolated values			  
-			  var templateHTML = templateFn(data);
-			  $(".storeList").html(templateHTML);
-		}
-		
-		//private function
-		var renderCitySelectionList = function (data) {
-			  //create template function
-			  var templateFn = _.template(citySelectionListTemplate);
-			  //execute template function with JSON object for the interpolated values			  
-			  var templateHTML = templateFn({"stores": data});			  
-			  $(".citySelectionList").html(templateHTML);
-		}
 		var initMap = function() {
 			if(typeof map === "undefined") {//to avoid re-init
 			    $("#mapholder").height(458);
@@ -173,32 +150,15 @@
 			else
 				markers[index].setIcon("icon/shopping-cart.png");
 		}
-		
-		var loadCityList = function() {			
-			$.ajax({
-				type : 'GET',				
-				url: '/geoapi/v1/cities',
-				dataType : 'json',
-				success : function(data) {
-					renderCitySelectionList(data)
-				},
-				error : function(jqXHR, textStatus) {
-					console.log(jqXHR, textStatus);
-				}
-			});
-		}
  		
 		//reveal public methods
 		return {
 			showError : showError,
-			getLocation : getLocation,			
-			renderNearestStores: renderNearestStores,
+			getLocation : getLocation,
 			initMap : initMap,
 			highlightStore: highlightStore,
-			undoHighlightStore: undoHighlightStore,			
-			loadCityList : loadCityList,			
+			undoHighlightStore: undoHighlightStore,
 			init : init,
-			findNearestStores : findNearestStores,
-			detailedSearch : detailedSearch
+			findNearestStores : findNearestStores
 		};	
 	})();
