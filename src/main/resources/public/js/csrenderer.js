@@ -3,11 +3,13 @@
 		var storeListTemplate = $("#store-list-template").html();
 		var citySelectionListTemplate = $("#city-list-template").html();
 		
+		//public function
 		var init = function() {
 			loadCityList();
 			JUMBO.DATASERVICE.subscribe(renderNearestStores);
 		}			
 		
+		//private function
 		var renderNearestStores = function (data) {
 			  //create template function
 			  var templateFn = _.template(storeListTemplate);
@@ -15,7 +17,8 @@
 			  var templateHTML = templateFn(data);
 			  $(".storeList").html(templateHTML);
 		}				
-				
+		
+		//private function
 		var loadCityList = function() {			
 			$.ajax({
 				type : 'GET',				
