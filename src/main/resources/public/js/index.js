@@ -28,10 +28,7 @@
 		
 		var setShowOpen = function(param) {
 			showOpen = param;
-		}
-		var getMap = function() {
-			return map;
-		}
+		}		
 		var setRadius = function(paramRadius) {
 			radius = paramRadius;
 		}
@@ -192,7 +189,7 @@
 			longitude = position.coords.longitude;
 		    initMap();
 		}
-		
+
 		var getLocation = function() {
 		    if (navigator.geolocation) {
 		        navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -258,10 +255,8 @@
 			setMaxResult: setMaxResult,
 			setRadius : setRadius,
 			loadCityList : loadCityList,
-			successCallbackDetailedSearch: successCallbackDetailedSearch,
-			getMap: getMap,
+			successCallbackDetailedSearch: successCallbackDetailedSearch,			
 			setShowOpen: setShowOpen
-			
 		};	
 	})();
 	
