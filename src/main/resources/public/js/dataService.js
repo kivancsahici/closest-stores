@@ -1,12 +1,12 @@
 JUMBO.DATASERVICE = (function() {
-		var changeListeners = [];
+		var subscribers = [];
 
 		var subscribe = function(callbackFunction) {
-		  changeListeners.push(callbackFunction);
+		  subscribers.push(callbackFunction);
 		}
 
 		var publish = function(data) {
-		  changeListeners.forEach((changeListener) => { changeListener(data); });
+		  subscribers.forEach((changeListener) => { changeListener(data); });
 		}
 		
 		var errorCallback = function(jqXHR, textStatus) {
@@ -41,11 +41,11 @@ JUMBO.DATASERVICE = (function() {
 		}
 		
 		var successCallbackGeoSearch = function(data) {			
-			changeListeners.forEach((changeListener) => { changeListener(data, false); });
+			subscribers.forEach((changeListener) => { changeListener(data, false); });
 		}
 		
 		var successCallbackDetailedSearch = function(data) {			
-			changeListeners.forEach((changeListener) => { changeListener(data, true); });
+			subscribers.forEach((changeListener) => { changeListener(data, true); });
 		}
 		
 		var addPlace = function(data) {
