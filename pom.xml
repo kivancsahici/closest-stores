@@ -15,7 +15,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<sonar.jacoco.reportPaths>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPaths>		
+		<sonar.jacoco.reportPaths>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPaths>
 		<sonar.language>java</sonar.language>
 	</properties>
 
@@ -43,8 +43,8 @@
 			<artifactId>jackson-databind</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>com.fasterxml.jackson.core</groupId>
-		    <artifactId>jackson-annotations</artifactId>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.zaxxer</groupId>
@@ -58,6 +58,19 @@
 	</dependencies>
 
 	<build>
+		<resources>
+	        <resource>
+	            <directory>src/main/resources</directory>
+	            <excludes>
+	                <exclude>public/js/map.js</exclude>	                
+	                <exclude>public/js/config.js</exclude>	                
+	                <exclude>public/js/dataservice.js</exclude>
+	                <exclude>public/js/csrenderer.js</exclude>
+	                <exclude>public/js/index.js</exclude>
+	            </excludes>
+	            <filtering>false</filtering>
+	        </resource>
+	    </resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -79,7 +92,38 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>			
+			</plugin>
+			<plugin>
+				<groupId>com.samaxes.maven</groupId>
+				<artifactId>minify-maven-plugin</artifactId>
+				<version>1.7.6</version>
+				<executions>
+					<execution>
+                        <id>default-minify</id>
+                        <goals>
+                            <goal>minify</goal>
+                        </goals>
+                        <configuration>
+                            <webappSourceDir>${project.basedir}/src/main/resources</webappSourceDir>
+                            <webappTargetDir>${project.build.directory}/classes</webappTargetDir>                            
+                            <charset>utf-8</charset>
+                            <jsEngine>CLOSURE</jsEngine>                            
+                            <cssSourceDir>public/css</cssSourceDir>
+                            <cssSourceIncludes>
+                                <cssSourceInclude>**.css</cssSourceInclude>
+                            </cssSourceIncludes>
+                            <jsSourceDir>public/js</jsSourceDir>                            
+                            <jsSourceFiles>
+                                <jsSourceFile>map.js</jsSourceFile>
+                                <jsSourceFile>config.js</jsSourceFile>
+                                <jsSourceFile>dataservice.js</jsSourceFile>
+                                <jsSourceFile>csrenderer.js</jsSourceFile>
+                                <jsSourceFile>index.js</jsSourceFile>
+                            </jsSourceFiles>
+                        </configuration>
+                    </execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
