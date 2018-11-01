@@ -9,3 +9,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?key=closest-stores-key&metric=coverage&project=closest-stores-key)](https://sonarcloud.io/component_measures?id=closest-stores-key&metric=coverage)
 
 `mvn spring-boot:run` can be used to run the application from the command line.
+
+##### API documentation
+
+If you're running it locally, you can use [this link](http://localhost:8090/swagger-ui.html) to access the documentation.

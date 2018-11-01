@@ -55,22 +55,32 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.9.2</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.9.2</version>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<resources>
-	        <resource>
-	            <directory>src/main/resources</directory>
-	            <excludes>
-	                <exclude>public/js/map.js</exclude>	                
-	                <exclude>public/js/config.js</exclude>	                
-	                <exclude>public/js/dataservice.js</exclude>
-	                <exclude>public/js/csrenderer.js</exclude>
-	                <exclude>public/js/index.js</exclude>
-	            </excludes>
-	            <filtering>false</filtering>
-	        </resource>
-	    </resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>public/js/map.js</exclude>
+					<exclude>public/js/config.js</exclude>
+					<exclude>public/js/dataservice.js</exclude>
+					<exclude>public/js/csrenderer.js</exclude>
+					<exclude>public/js/index.js</exclude>
+				</excludes>
+				<filtering>false</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -99,29 +109,29 @@
 				<version>1.7.6</version>
 				<executions>
 					<execution>
-                        <id>default-minify</id>
-                        <goals>
-                            <goal>minify</goal>
-                        </goals>
-                        <configuration>
-                            <webappSourceDir>${project.basedir}/src/main/resources</webappSourceDir>
-                            <webappTargetDir>${project.build.directory}/classes</webappTargetDir>                            
-                            <charset>utf-8</charset>
-                            <jsEngine>CLOSURE</jsEngine>                            
-                            <cssSourceDir>public/css</cssSourceDir>
-                            <cssSourceIncludes>
-                                <cssSourceInclude>**.css</cssSourceInclude>
-                            </cssSourceIncludes>
-                            <jsSourceDir>public/js</jsSourceDir>                            
-                            <jsSourceFiles>
-                                <jsSourceFile>map.js</jsSourceFile>
-                                <jsSourceFile>config.js</jsSourceFile>
-                                <jsSourceFile>dataservice.js</jsSourceFile>
-                                <jsSourceFile>csrenderer.js</jsSourceFile>
-                                <jsSourceFile>index.js</jsSourceFile>
-                            </jsSourceFiles>
-                        </configuration>
-                    </execution>
+						<id>default-minify</id>
+						<goals>
+							<goal>minify</goal>
+						</goals>
+						<configuration>
+							<webappSourceDir>${project.basedir}/src/main/resources</webappSourceDir>
+							<webappTargetDir>${project.build.directory}/classes</webappTargetDir>
+							<charset>utf-8</charset>
+							<jsEngine>CLOSURE</jsEngine>
+							<cssSourceDir>public/css</cssSourceDir>
+							<cssSourceIncludes>
+								<cssSourceInclude>**.css</cssSourceInclude>
+							</cssSourceIncludes>
+							<jsSourceDir>public/js</jsSourceDir>
+							<jsSourceFiles>
+								<jsSourceFile>map.js</jsSourceFile>
+								<jsSourceFile>config.js</jsSourceFile>
+								<jsSourceFile>dataservice.js</jsSourceFile>
+								<jsSourceFile>csrenderer.js</jsSourceFile>
+								<jsSourceFile>index.js</jsSourceFile>
+							</jsSourceFiles>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 		</plugins>
