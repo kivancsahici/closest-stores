@@ -1,6 +1,6 @@
 package com.jumbo.stores.controller;
 
-public class Views {
+public final class Views {
 	private Views() {
 		throw new IllegalStateException("Utility class");
 	}
