@@ -13,22 +13,22 @@ import com.jumbo.stores.controller.Views;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Store implements Serializable{
 	private static final long serialVersionUID = 2976102889581906993L;
-	
+
 	@Id
     private Integer sapStoreID;
 	private String city;
 	private String postalCode;
-	
+
 	@JsonView(Views.Lazy.class)
 	private String street;
-	
+
     private String addressName;
     private double longitude;
     private double latitude;
     private String todayClose;
     private String todayOpen;
     private String locationType;
-    
+
 	public String getCity() {
 		return city;
 	}
@@ -75,7 +75,7 @@ public class Store implements Serializable{
 		return todayClose;
 	}
 	public void setTodayClose(String todayClose) {
-		this.todayClose = todayClose;	
+		this.todayClose = todayClose;
 	}
 	public String getTodayOpen() {
 		return todayOpen;
@@ -88,5 +88,26 @@ public class Store implements Serializable{
 	}
 	public void setLocationType(String locationType) {
 		this.locationType = locationType;
+	}
+
+	public static class StoreBuilder {
+		private Integer sapStoreID;
+		private String todayClose;
+
+		public StoreBuilder(Integer sapStoreID) {
+			this.sapStoreID = sapStoreID;
+		}
+
+		public StoreBuilder withTodayClose(String todayClose) {
+			this.todayClose = todayClose;
+			return this;
+		}
+
+		public Store build() {
+			Store account = new Store();
+			account.sapStoreID = this.sapStoreID;
+			account.todayClose = this.todayClose;
+			return account;
+		}
 	}
 }
