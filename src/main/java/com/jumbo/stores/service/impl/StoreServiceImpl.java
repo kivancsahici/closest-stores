@@ -74,8 +74,7 @@ public class StoreServiceImpl implements IStoreService{
 
 		LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
 
-		for(StoreResult result : storeList) {
-
+		storeList.stream().forEach(result -> {
 			LocalTime from = LocalTime.parse(result.getTodayOpen());
 			LocalTime to = LocalTime.parse(result.getTodayClose());
 			if(now.isAfter(from) && now.isBefore(to)) {
@@ -86,7 +85,8 @@ public class StoreServiceImpl implements IStoreService{
 			}
 			else
 				result.setStoreStatus(StoreStatus.CLOSED);
-		}
+		});
+
 		if(showOpen)
 			storeList.removeIf(s -> s.getStoreStatus().equals(StoreStatus.CLOSED));
 
@@ -96,6 +96,7 @@ public class StoreServiceImpl implements IStoreService{
 		nearestStores.setLongitude(longitude);
 		return nearestStores;
 	}
+
 
 	@Override
 	public List<String> findUniqueCities() {

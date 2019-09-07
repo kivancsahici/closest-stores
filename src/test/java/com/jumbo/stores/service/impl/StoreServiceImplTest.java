@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.jumbo.stores.dao.entity.Store;
@@ -29,6 +30,7 @@ public class StoreServiceImplTest {
     static class StoreServiceImplTestContextConfiguration {
 
         @Bean
+        @Primary
         public IStoreService employeeService() {
             return new StoreServiceImpl();
         }
