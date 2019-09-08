@@ -3,8 +3,8 @@ package com.jumbo.stores.service.impl;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,11 +35,10 @@ public class StoreServiceImpl implements IStoreService{
 	@Override
 	public NearestStores findByCityAndStreet(String city, String street) {
 		List<Store> storeList = storeRepository.findByCityAndStreetOrderByStreet(city, street);
-		List<StoreResult> storeResultList = new ArrayList<>();
 
-		LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
+		final LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
 
-		for(Store store : storeList) {
+		final List<StoreResult> storeResultList = storeList.stream().map(store -> {
 			StoreResult storeResult = new StoreResult();
 			storeResult.setAddressName(store.getAddressName());
 			storeResult.setCity(store.getCity());
@@ -50,8 +49,9 @@ public class StoreServiceImpl implements IStoreService{
 			storeResult.setTodayOpen(store.getTodayOpen());
 			storeResult.setTodayClose(store.getTodayClose());
 
-			LocalTime from = LocalTime.parse(storeResult.getTodayOpen());
-			LocalTime to = LocalTime.parse(storeResult.getTodayClose());
+			final LocalTime from = LocalTime.parse(store.getTodayOpen());
+			final LocalTime to = LocalTime.parse(store.getTodayClose());
+
 			if(now.isAfter(from) && now.isBefore(to)) {
 				if(ChronoUnit.MINUTES.between(now, to) < 60)
 					storeResult.setStoreStatus(StoreStatus.CLOSING_SOON);
@@ -60,8 +60,10 @@ public class StoreServiceImpl implements IStoreService{
 			}
 			else
 				storeResult.setStoreStatus(StoreStatus.CLOSED);
-			storeResultList.add(storeResult);
-		}
+
+			return storeResult;
+		}).collect(Collectors.toList());
+
 		NearestStores stores = new NearestStores();
 		stores.setNearestStores(storeResultList);
 		return stores;
