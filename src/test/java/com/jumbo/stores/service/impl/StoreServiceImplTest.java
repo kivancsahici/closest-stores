@@ -28,10 +28,9 @@ public class StoreServiceImplTest {
 
 	@TestConfiguration
     static class StoreServiceImplTestContextConfiguration {
-
         @Bean
         @Primary
-        public IStoreService employeeService() {
+        public IStoreService storeService() {
             return new StoreServiceImpl();
         }
     }
@@ -95,8 +94,9 @@ public class StoreServiceImplTest {
 		throw new RuntimeException("not yet implemented");
 	}
 
-	@Ignore
+	@Test
 	public void testFindUniqueCities() throws Exception {
-		throw new RuntimeException("not yet implemented");
+		storeServiceImpl.findUniqueCities();
+		Mockito.verify(storeRepository, times(1)).findDistinctCities();
 	}
 }

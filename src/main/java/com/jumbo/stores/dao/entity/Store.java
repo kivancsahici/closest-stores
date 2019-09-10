@@ -93,6 +93,7 @@ public class Store implements Serializable{
 	public static class StoreBuilder {
 		private Integer sapStoreID;
 		private String todayClose;
+		private String city;
 
 		public StoreBuilder(Integer sapStoreID) {
 			this.sapStoreID = sapStoreID;
@@ -100,6 +101,11 @@ public class Store implements Serializable{
 
 		public StoreBuilder withTodayClose(String todayClose) {
 			this.todayClose = todayClose;
+			return this;
+		}
+
+		public StoreBuilder withCity(String city) {
+			this.city = city;
 			return this;
 		}
 
