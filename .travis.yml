@@ -7,3 +7,5 @@ addons:
 script:
   # the following command line builds the project, runs the tests with coverage and then execute the SonarCloud analysis
   - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=closest-stores-key -Dsonar.organization=kivancsahici-github -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=f0330d9b5346b507b007cdd1c8b16f0c9ed2ddd4
+after_failure:
+  - cat target/surefire-reports/*.txt
