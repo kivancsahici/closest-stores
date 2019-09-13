@@ -92,11 +92,17 @@ public class Store implements Serializable{
 
 	public static class StoreBuilder {
 		private Integer sapStoreID;
+		private String todayOpen;
 		private String todayClose;
 		private String city;
 
 		public StoreBuilder(Integer sapStoreID) {
 			this.sapStoreID = sapStoreID;
+		}
+
+		public StoreBuilder withTodayOpen(String todayOpen) {
+			this.todayOpen = todayOpen;
+			return this;
 		}
 
 		public StoreBuilder withTodayClose(String todayClose) {
@@ -110,10 +116,12 @@ public class Store implements Serializable{
 		}
 
 		public Store build() {
-			Store account = new Store();
-			account.sapStoreID = this.sapStoreID;
-			account.todayClose = this.todayClose;
-			return account;
+			Store store = new Store();
+			store.sapStoreID = this.sapStoreID;
+			store.todayOpen = this.todayOpen;
+			store.todayClose = this.todayClose;
+			store.city = this.city;
+			return store;
 		}
 	}
 }
