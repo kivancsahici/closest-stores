@@ -2,7 +2,7 @@
 
 ![Image of SonarCloud](https://sonarcloud.io/images/project_badges/sonarcloud-white.svg)
 
-[![Build Status](https://travis-ci.org/kivancsahici/closest-stores.svg?branch=master)](https://travis-ci.org/kivancsahici/closest-stores)
+[![Build Status](https://travis-ci.org/kivancsahici/closest-stores.svg?branch=develop)](https://travis-ci.org/kivancsahici/closest-stores)
 
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=closest-stores-key&metric=alert_status)](https://sonarcloud.io/dashboard/index/closest-stores-key)
 
