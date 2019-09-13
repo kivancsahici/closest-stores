@@ -18,10 +18,10 @@ public class StoreResult {
     private String todayOpen;
     private String todayClose;
     private String locationType;
-    
+
     @Transient
     private StoreStatus storeStatus;
-    
+
 	public Integer getSapStoreID() {
 		return sapStoreID;
 	}
@@ -75,5 +75,40 @@ public class StoreResult {
 	}
 	public void setLocationType(String locationType) {
 		this.locationType = locationType;
+	}
+
+	public static class StoreResultBuilder {
+		private Integer sapStoreID;
+		private String todayOpen;
+		private String todayClose;
+		private String city;
+
+		public StoreResultBuilder(Integer sapStoreID) {
+			this.sapStoreID = sapStoreID;
+		}
+
+		public StoreResultBuilder withTodayOpen(String todayOpen) {
+			this.todayOpen = todayOpen;
+			return this;
+		}
+
+		public StoreResultBuilder withTodayClose(String todayClose) {
+			this.todayClose = todayClose;
+			return this;
+		}
+
+		public StoreResultBuilder withCity(String city) {
+			this.city = city;
+			return this;
+		}
+
+		public StoreResult build() {
+			StoreResult storeResult = new StoreResult();
+			storeResult.sapStoreID = this.sapStoreID;
+			storeResult.todayOpen = this.todayOpen;
+			storeResult.todayClose = this.todayClose;
+			storeResult.city = this.city;
+			return storeResult;
+		}
 	}
 }

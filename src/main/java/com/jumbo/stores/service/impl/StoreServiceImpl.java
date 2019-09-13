@@ -1,5 +1,6 @@
 package com.jumbo.stores.service.impl;
 
+import java.time.Clock;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -18,6 +19,11 @@ import com.jumbo.stores.service.dto.NearestStores;
 
 @Service
 public class StoreServiceImpl implements IStoreService{
+    private static final ZoneId zoneId = ZoneId.of("GMT+2");
+
+    @Autowired(required=false)
+    private Clock clock = Clock.system(zoneId);
+
 	@Autowired
 	IStoreRepository storeRepository;
 
@@ -36,7 +42,7 @@ public class StoreServiceImpl implements IStoreService{
 	public NearestStores findByCityAndStreet(String city, String street) {
 		List<Store> storeList = storeRepository.findByCityAndStreetOrderByStreet(city, street);
 
-		final LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
+		final LocalTime now = LocalTime.now(clock);
 
 		final List<StoreResult> storeResultList = storeList.stream().map(store -> {
 			StoreResult storeResult = new StoreResult();
@@ -74,7 +80,7 @@ public class StoreServiceImpl implements IStoreService{
 			Boolean showOpen) {
 		List<StoreResult> storeList = storeRepository.findNearestStores(latitude, longitude, radius, maxResult);
 
-		LocalTime now = LocalTime.now(ZoneId.of("GMT+2"));
+		LocalTime now = LocalTime.now(clock);
 
 		storeList.stream().forEach(result -> {
 			LocalTime from = LocalTime.parse(result.getTodayOpen());
