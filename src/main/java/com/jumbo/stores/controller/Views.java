@@ -7,7 +7,4 @@ public final class Views {
 
 	public static class Lazy {
 	}
-
-	public static class Eager extends Lazy {
-	}
 }
