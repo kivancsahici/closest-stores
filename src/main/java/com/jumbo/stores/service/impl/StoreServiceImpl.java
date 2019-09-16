@@ -95,7 +95,7 @@ public class StoreServiceImpl implements IStoreService{
 				result.setStoreStatus(StoreStatus.CLOSED);
 		});
 
-		if(showOpen)
+		if(Boolean.TRUE.equals(showOpen))
 			storeList.removeIf(s -> s.getStoreStatus().equals(StoreStatus.CLOSED));
 
 		NearestStores nearestStores = new NearestStores();
